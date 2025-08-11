@@ -1,0 +1,14 @@
+# Archivos de la maquina virtual 
+venv/
+.env/
+
+# Archivos de caché y de compilición de python
+__pycache__/
+*.pyc
+
+# Archivos de logs y datos que no queremos en el repositorio 
+*.log
+
+# Archivos del sistema operativo
+.DS_Store
+
