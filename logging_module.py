@@ -1,4 +1,5 @@
 import logging 
+from logging.handlers import RotatingFileHandler
 import sys 
 
 # In order to use the logging system in any module, it is necessary to write
@@ -17,9 +18,15 @@ def setup_logging(app_name: str = "snow"):
     #Format for the log messages
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(levelname)s - %(message)s - %(threadName)s')
 
-    #File handler creation
+    #file handler creation
     # This only will send info logs or higher to 'sistema_log_snow.log'
-    file_handler = logging.FileHandler('sistema_log_snow.log', mode='a', encoding='utf-8')
+    file_handler = RotatingFileHandler(
+        'sistema_log_snow.log',
+        maxBytes=1_000_000, # Maximum file size of 1MB
+        backupCount=5,      # Keep up to 5 backup files
+        encoding='utf-8'    # Ensure the log file is written in UTF-8 encoding
+    )
+
     file_handler.setLevel(logging.INFO) # Set the file handler to log INFO level and above
     file_handler.setFormatter(formatter) # Set the formatter for the file handler
 

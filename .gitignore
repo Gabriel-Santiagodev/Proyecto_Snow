@@ -8,6 +8,7 @@ __pycache__/
 
 # Archivos de logs y datos que no queremos en el repositorio 
 *.log
+*.log.*
 
 # Archivos del sistema operativo
 .DS_Store
