@@ -16,7 +16,10 @@ def setup_logging(app_name: str = "snow"):
     logger.propagate = False # Prevent log messages from being propagated to the root logger
 
     #Format for the log messages
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(levelname)s - %(message)s - %(threadName)s')
+    formatter = logging.Formatter(
+        fmt="%(asctime)s | %(levelname)s | %(name)s | %(threadName)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+        )
 
     #file handler creation
     # This only will send info logs or higher to 'sistema_log_snow.log'
