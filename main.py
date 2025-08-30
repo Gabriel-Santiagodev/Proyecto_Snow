@@ -7,9 +7,9 @@ import threading
 """ Modules import"""
 #---------------------------------------------------------
 
-#from MainFlow import cameras_module
-#from MainFlow import yolo_module
-#from MainFlow import audio_module
+#from TareasFlujoPrincipal import cameras_module
+#from TareasFlujoPrincipal import yolo_module
+#from TareasFlujoPrincipal import audio_module
 
 #---------------------------------------------------------
 
