@@ -3,7 +3,7 @@ import time
 import ModulosGenerales.modulo_logging as modulo_logging 
 """
 from TareasFlujoPrincipal import cameras_module, yolo_module, audio_module, 
-from Tareas SegundoPlano import oled_module
+from TareasSegundoPlano import oled_module
 """
 modulo_logging.setup_logging()
 logger = logging.getLogger("snow").getChild("orchestrator")
