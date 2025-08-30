@@ -10,3 +10,4 @@ FILE_LOG = logging.INFO # INFO and above will be logged to file
 ERROR_BUFFER_MAXLEN = 5 # Maximum number of error messages to store in the buffer
 
 #--------------------------------------------------------------------------------------
+
