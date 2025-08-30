@@ -7,7 +7,7 @@ It ensures consistent logging, proper thread management, and clean integration i
 
 ## 📌 How to use
 
-1. **Copy this file** into `/Proyecto_Snow/MainFlowTasks/` or `/Proyecto_Snow/BackgroundTasks/` (Background is for background tasks) in your respective file  
+1. **Copy this file** into `/Proyecto_Snow/TareasFlujoPrincipal/` or `/Proyecto_Snow/TareasSegundoPlano/` (Background is for background tasks) in your respective file  
    _(e.g., `cameras_module.py`, `yolo_module.py`, `audio_module.py`,  etc.)_.
 
 2. **Change `module_name`** to match the actual module_name in:
