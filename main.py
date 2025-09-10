@@ -52,7 +52,7 @@ def main():
     #-----------------------------------------------------
 
     # Cameras thread---------------------------------------
-   
+
     cameras_thread = threading.Thread(
         target=cameras_module.run,
         name="CAMERAS",
