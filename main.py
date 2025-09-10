@@ -3,13 +3,21 @@
 import logging
 import ModulosGenerales.modulo_logging as modulo_logging 
 import threading
+import queue
 
 """ Modules import"""
 #---------------------------------------------------------
 
-#from TareasFlujoPrincipal import cameras_module
+from TareasFlujoPrincipal import cameras_module
 #from TareasFlujoPrincipal import yolo_module
 #from TareasFlujoPrincipal import audio_module
+
+#---------------------------------------------------------
+
+""" Variables globales """
+#---------------------------------------------------------
+
+cola_frames = queue.Queue()
 
 #---------------------------------------------------------
 
@@ -44,15 +52,15 @@ def main():
     #-----------------------------------------------------
 
     # Cameras thread---------------------------------------
-    """ Remove this line for enabling cameras module
+   
     cameras_thread = threading.Thread(
         target=cameras_module.run,
         name="CAMERAS",
-        args=(stop_event,),
+        args=(stop_event,cola_frames,),
         daemon=False
     )
     cameras_thread.start()
-    Remove this line for enabling cameras module"""
+    
     # -----------------------------------------------------
 
     # Yolo thread------------------------------------------
@@ -108,12 +116,18 @@ def main():
     # Keep the main thread alive until interrupted---------
     
     try:
-        pass
+        #oled_thread.join() # Uncomment this line when oled module is enabled
+        cameras_thread.join() # Uncomment this line when cameras module is enabled
+        #yolo_thread.join() # Uncomment this line when yolo module is enabled
+        #audio_thread.join() # Uncomment this line when audio module is enabled
+        #tracking_thread.join() # Uncomment this line when tracking module is enabled
+        #hilo_orquestador.join() # Uncomment this line when orquestador module is enabled
+        pass # remove this line when all modules are enabled
     except KeyboardInterrupt:
         main_logger.info("Shutting down the application")
         stop_event.set() 
         #oled_thread.join() # Uncomment this line when oled module is enabled
-        #cameras_thread.join() # Uncomment this line when cameras module is enabled
+        cameras_thread.join() 
         #yolo_thread.join() # Uncomment this line when yolo module is enabled
         #audio_thread.join() # Uncomment this line when audio module is enabled
         #tracking_thread.join() # Uncomment this line when tracking module is enabled
@@ -125,4 +139,3 @@ def main():
     if __name__ == "__main__":
         main()
     #------------------------------------------------------
-
