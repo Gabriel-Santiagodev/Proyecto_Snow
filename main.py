@@ -108,13 +108,7 @@ def main():
     # Keep the main thread alive until interrupted---------
     
     try:
-        #oled_thread.join() # Uncomment this line when oled module is enabled
-        #cameras_thread.join() # Uncomment this line when cameras module is enabled
-        #yolo_thread.join() # Uncomment this line when yolo module is enabled
-        #audio_thread.join() # Uncomment this line when audio module is enabled
-        #tracking_thread.join() # Uncomment this line when tracking module is enabled
-        #hilo_orquestador.join() # Uncomment this line when orquestador module is enabled
-        pass # remove this line when all modules are enabled
+        pass
     except KeyboardInterrupt:
         main_logger.info("Shutting down the application")
         stop_event.set() 
