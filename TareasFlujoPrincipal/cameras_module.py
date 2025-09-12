@@ -80,14 +80,6 @@ def toma_frame(cam1,cam2):
 camara1 = cv2.VideoCapture(0)
 camara2 = cv2.VideoCapture(1)
 
-#Apartado donde se especifican los 640x640 pixeles, con los que el procesamiento de frames puede trabajar
-camara1.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camara1.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
-camara2.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camara2.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
-
-
-
 #Configuracion del logging
 modulo_logging.setup_logging()
 logger = logging.getLogger("snow").getChild("cameras_module")

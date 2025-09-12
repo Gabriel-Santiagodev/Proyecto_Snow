@@ -8,7 +8,7 @@ import queue
 """ Modules import"""
 #---------------------------------------------------------
 
-from TareasFlujoPrincipal import cameras_module
+from .TareasFlujoPrincipal import cameras_module
 #from TareasFlujoPrincipal import yolo_module
 #from TareasFlujoPrincipal import audio_module
 
@@ -136,6 +136,7 @@ def main():
     
     main_logger.info("Application has been shut down")
 
-    if __name__ == "__main__":
-        main()
+
     #------------------------------------------------------
+if __name__ == "__main__":
+    main()
