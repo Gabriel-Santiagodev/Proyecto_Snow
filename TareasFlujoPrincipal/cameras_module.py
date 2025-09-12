@@ -68,11 +68,19 @@ def verificar_camaras(cam1,cam2,THRESHOLD):
 
 
 #Funcion que almacena Frames
-def toma_frame(cam1,cam2):
+def toma_frame(cam1,cam2,cola_frames):
 
     #Captura de frames para ambas camaras
     condicion1, frame1 = cam1.read()
     condicion2, frame2 = cam2.read()
+    if condicion1 and condicion2:
+        #Diccionario para almacenar los frames
+        frames_YOLO = {
+            "camara1": frame1,
+            "camara2": frame2
+        }
+        #Almacenamiento de frames en la cola
+        cola_frames.put(frames_YOLO)
 
 
 
@@ -80,25 +88,24 @@ def toma_frame(cam1,cam2):
 camara1 = cv2.VideoCapture(0)
 camara2 = cv2.VideoCapture(1)
 
-#Apartado donde se especifican los 640x640 pixeles, con los que el procesamiento de frames puede trabajar
-camara1.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camara1.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
-camara2.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-camara2.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
-
 
 
 #Configuracion del logging
 modulo_logging.setup_logging()
 logger = logging.getLogger("snow").getChild("cameras_module")
 
+
+
 #Flujo principal del modulo
-def run(stop_event):
+def run(stop_event,cola_frames):
     logger.info("Module 'cameras_module' started")
 
     while not stop_event.is_set():
         esta_trabajando = verificar_camaras(camara1, camara2, THRESHOLD) 
         if esta_trabajando:
-            toma_frame(camara1, camara2)
+            toma_frame(camara1, camara2,cola_frames)
+        else:
+            #Pausa para no saturar, en caso de que las camaras no sirvan
+            time.sleep(2)
 
     logger.info("Module 'cameras_module' stopped")
