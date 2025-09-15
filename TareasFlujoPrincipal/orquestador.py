@@ -1,18 +1,28 @@
+import os
 import logging
 import time
 import ModulosGenerales.modulo_logging as modulo_logging 
 from ultralytics import YOLO
-from cameras_module import esta_trabajando,toma_frame
+from .cameras_module import verificar_camaras,toma_frame
 from TareasFlujoPrincipal.audio_module import AudioSystem
 import cv2
+import pygame
+from config import THRESHOLD
 
-model = YOLO("best.pt")  # modelo YOLO
+
+# 1. Obtenemos la ruta del directorio donde se encuentra este script (orquestador.py)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# 2. Unimos esa ruta con el nombre del archivo del modelo para crear la ruta completa
+model_path = os.path.join(script_dir, "best.pt")
+# 3. Cargamos el modelo usando la ruta completa y correcta
+model = YOLO(model_path)  # modelo YOLO
 roi_x1, roi_y1, roi_x2, roi_y2 = 320, 0, 640, 480   # Definir la zona de interés (x1, y1, x2, y2)
 
 
 #Declaracion de variables
 camara1 = cv2.VideoCapture(0)
 camara2 = cv2.VideoCapture(1)
+esta_trabajando = verificar_camaras(camara1, camara2, THRESHOLD)
 
 """
 from TareasFlujoPrincipal import cameras_module, yolo_module, audio_module, 
