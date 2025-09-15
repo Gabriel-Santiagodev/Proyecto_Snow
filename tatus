@@ -1,0 +1,39 @@
+* [33mb4df184[m[33m ([m[1;31morigin/yerik_oled[m[33m)[m Modulo Oled y test
+[31m|[m *   [33m94d13e0[m[33m ([m[1;31morigin/integracion1[m[33m)[m Implementar cola_frames para compartir frames usando una cola
+[31m|[m [32m|[m[33m\[m  
+[31m|[m [32m|[m * [33m6e829a8[m[33m ([m[1;31morigin/camaras_prueba[m[33m)[m Se completa la refactorización del módulo de cámaras y se añade la constante THRESHOLD
+[31m|[m [32m|[m *   [33m2cad8c2[m Se completa la refactorización del módulo de cámaras y se añade la constante THRESHOLD
+[31m|[m [32m|[m [34m|[m[31m\[m  
+[31m|[m [32m|[m[31m_[m[34m|[m[31m/[m  
+[31m|[m[31m/[m[32m|[m [34m|[m   
+[31m|[m [32m|[m * [33m506fa91[m Se añade la carpeta 'camaras' y se re-acomoda el código
+[31m|[m * [35m|[m [33mca99b7d[m Implementar cola_frames para compartir frames usando una cola
+[31m|[m * [35m|[m   [33md1ac0b0[m Merge pull request #6 from Gabriel-Santiagodev/main
+[31m|[m [36m|[m[31m\[m [35m\[m  
+[31m|[m [36m|[m[31m/[m [35m/[m  
+[31m|[m[31m/[m[36m|[m [35m|[m   
+[31m|[m [36m|[m [35m|[m * [33m61377c8[m[33m ([m[1;31morigin/yerik_audio[m[33m)[m Modulo de audio
+[31m|[m [36m|[m[31m_[m[35m|[m[31m/[m  
+[31m|[m[31m/[m[36m|[m [35m|[m   
+* [36m|[m [35m|[m   [33m5715c76[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mrama_abraham[m[33m, [m[1;31morigin/rama_abraham[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #5 from Gabriel-Santiagodev/base_setup
+[36m|[m[1;34m\[m [36m\[m [35m\[m  
+[36m|[m [1;34m|[m[36m/[m [35m/[m  
+[36m|[m[36m/[m[1;34m|[m [35m|[m   
+[36m|[m * [35m|[m [33m365fc60[m[33m ([m[1;31morigin/base_setup[m[33m)[m Update orquestador.py
+[36m|[m * [35m|[m [33m1f3906e[m Update: Arreglo general de sintaxis
+[36m|[m[36m/[m [35m/[m  
+* [35m|[m [33m06f54bb[m Update: Cambio de lugar de README.md
+* [35m|[m   [33m600f9e2[m Merge pull request #4 from Gabriel-Santiagodev/base_setup
+[35m|[m[1;36m\[m [35m\[m  
+[35m|[m [1;36m|[m[35m/[m  
+[35m|[m[35m/[m[1;36m|[m   
+[35m|[m * [33m4694be4[m Update: Nueva estructura general
+[35m|[m * [33m930a316[m Update: LogFormatUpdate
+[35m|[m * [33m3b8f967[m Update: RotatingLogsCreation
+[35m|[m * [33mf13f520[m Update: Avoid Duplicates and AppNameLog
+[35m|[m[35m/[m  
+* [33m635c60b[m feat: Creation of the main file
+* [33m91f5067[m feat: Update logging module
+* [33mc785265[m feat: Creation of logging file
+* [33me49c71b[m feat: Change in the README
+* [33ma9cf569[m feat: Initial commit with README and gitignore
