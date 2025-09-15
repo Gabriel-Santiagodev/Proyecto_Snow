@@ -90,6 +90,8 @@ camara2 = cv2.VideoCapture(1)
 
 
 
+
+
 #Configuracion del logging
 modulo_logging.setup_logging()
 logger = logging.getLogger("snow").getChild("cameras_module")
