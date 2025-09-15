@@ -8,7 +8,7 @@ import queue
 """ Modules import"""
 #---------------------------------------------------------
 
-from TareasFlujoPrincipal import cameras_module
+from .TareasFlujoPrincipal import cameras_module
 #from TareasFlujoPrincipal import yolo_module
 #from TareasFlujoPrincipal import audio_module
 
@@ -52,7 +52,7 @@ def main():
     #-----------------------------------------------------
 
     # Cameras thread---------------------------------------
-   
+
     cameras_thread = threading.Thread(
         target=cameras_module.run,
         name="CAMERAS",
@@ -117,7 +117,7 @@ def main():
     
     try:
         #oled_thread.join() # Uncomment this line when oled module is enabled
-        cameras_thread.join() 
+        cameras_thread.join() # Uncomment this line when cameras module is enabled
         #yolo_thread.join() # Uncomment this line when yolo module is enabled
         #audio_thread.join() # Uncomment this line when audio module is enabled
         #tracking_thread.join() # Uncomment this line when tracking module is enabled
@@ -136,6 +136,7 @@ def main():
     
     main_logger.info("Application has been shut down")
 
-    if __name__ == "__main__":
-        main()
+
     #------------------------------------------------------
+if __name__ == "__main__":
+    main()
