@@ -19,6 +19,7 @@ from TareasSegundoPlano import oled_module
 #---------------------------------------------------------
 
 cola_frames = queue.Queue()
+cola_audio = queue.Queue()
 
 #---------------------------------------------------------
 
@@ -64,16 +65,12 @@ def main():
     
     # -----------------------------------------------------
 
-    # Yolo thread------------------------------------------
-    
-    # -----------------------------------------------------
-
     # Audio thread-----------------------------------------
    
     audio_thread = threading.Thread(
         target=audio_module.run,
         name="AUDIO",
-        args=(stop_event,cola_frames,),
+        args=(stop_event,cola_audio,),
         daemon=False
     )
     audio_thread.start()
@@ -85,33 +82,26 @@ def main():
     hilo_orquestador = threading.Thread(
         target=orquestador.run,
         name="orquestador",
-        args=(stop_event,),
+        args=(stop_event,cola_frames,cola_audio,),
         daemon=False
     )
     hilo_orquestador.start()
-    
-    #------------------------------------------------------
-
-    #------------------------------------------------------
 
     # Keep the main thread alive until interrupted---------
     
     try:
-        oled_thread.join() # Uncomment this line when oled module is enabled
-        cameras_thread.join() # Uncomment this line when cameras module is enabled
-        #yolo_thread.join() # Uncomment this line when yolo module is enabled
-        audio_thread.join() # Uncomment this line when audio module is enabled
-        hilo_orquestador.join() # Uncomment this line when orquestador module is enabled
+        oled_thread.join()
+        cameras_thread.join() 
+        audio_thread.join() 
+        hilo_orquestador.join()
        
     except KeyboardInterrupt:
         main_logger.info("Shutting down the application")
         stop_event.set() 
-        oled_thread.join() # Uncomment this line when oled module is enabled
+        oled_thread.join() 
         cameras_thread.join() 
-        #yolo_thread.join() # Uncomment this line when yolo module is enabled
-        audio_thread.join() # Uncomment this line when audio module is enabled
-        #tracking_thread.join() # Uncomment this line when tracking module is enabled
-        hilo_orquestador.join() # Uncomment this line when orquestador module is enabled
+        audio_thread.join() 
+        hilo_orquestador.join() 
         
     
     main_logger.info("Application has been shut down")
