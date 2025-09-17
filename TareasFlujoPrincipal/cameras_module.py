@@ -47,9 +47,9 @@ def verificar_camaras(cam1,cam2,THRESHOLD):
         logger.warning("Camara 1 no se pudo abrir")
         return False
     #Error al abrir la camara 2
-    elif not cam2.isOpened():
-        logger.warning("Camara 2 no se pudo abrir")
-        return False
+    #elif not cam2.isOpened():
+        #logger.warning("Camara 2 no se pudo abrir")
+        #return False
     #Error de obstrucion en ambas camaras
     elif obstruccion_cam1 and obstruccion_cam2:
         logger.critical("Ambas camaras obstruidas")
@@ -59,34 +59,36 @@ def verificar_camaras(cam1,cam2,THRESHOLD):
         logger.error("Camara 1 obstruida")
         return False  
     #Error de obstrucion en camara 2
-    elif obstruccion_cam2:
-        logger.error("Camara 2 obstruida")
-        return False
+    #elif obstruccion_cam2:
+        #logger.error("Camara 2 obstruida")
+        #return False
     else:
         return True 
 
 
 
 #Funcion que almacena Frames
-def toma_frame(cam1,cam2,cola_frames):
+def toma_frame(cam1,cola_frames):
 
     #Captura de frames para ambas camaras
     condicion1, frame1 = cam1.read()
-    condicion2, frame2 = cam2.read()
-    if condicion1 and condicion2:
-        #Diccionario para almacenar los frames
-        frames_YOLO = {
-            "camara1": frame1,
-            "camara2": frame2
-        }
+    if condicion1:
         #Almacenamiento de frames en la cola
-        cola_frames.put(frames_YOLO)
+        cola_frames.put(frame1)
+        cv2.imshow("Laptop", frame1)
+        cv2.waitKey(0) 
 
 
 
 #Declaracion de variables
 camara1 = cv2.VideoCapture(0)
 camara2 = cv2.VideoCapture(1)
+
+#Apartado donde se especifican los 640x640 pixeles, con los que el procesamiento de frames puede trabajar
+camara1.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+camara1.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
+camara2.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+camara2.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
 
 
 
@@ -103,7 +105,7 @@ def run(stop_event,cola_frames):
     while not stop_event.is_set():
         esta_trabajando = verificar_camaras(camara1, camara2, THRESHOLD) 
         if esta_trabajando:
-            toma_frame(camara1, camara2,cola_frames)
+            toma_frame(camara1,cola_frames)
         else:
             #Pausa para no saturar, en caso de que las camaras no sirvan
             time.sleep(2)

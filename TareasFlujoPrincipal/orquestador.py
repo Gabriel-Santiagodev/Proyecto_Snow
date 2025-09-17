@@ -42,7 +42,8 @@ def run(stop_event,cola_frames,cola_audio):
             results = modelo(frame_roi)
 
             for box in results[0].boxes:    # Bucle de detecciones      results[0] indica la imagen actual      .boxes indica las bounding box
-                conf = float(box.conf[0])           # Guarda la confianza de las bounding box
+                conf = float(box.conf[0])
+                print(f"{conf*100:.2f}")           # Guarda la confianza de las bounding box
                 if conf > 0.85:                     # si la conf es mayor a 84% reproduce un sonido y detiene el sistema hasta que termine este
                     logging.info(f"Clase detectada con {conf*100:.2f}% de confianza")
                     audio = AudioSystem(audio_file="audio.mp3")
