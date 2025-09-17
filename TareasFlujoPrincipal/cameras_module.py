@@ -75,8 +75,6 @@ def toma_frame(cam1,cola_frames):
     if condicion1:
         #Almacenamiento de frames en la cola
         cola_frames.put(frame1)
-        cv2.imshow("Laptop", frame1)
-        cv2.waitKey(0) 
 
 
 

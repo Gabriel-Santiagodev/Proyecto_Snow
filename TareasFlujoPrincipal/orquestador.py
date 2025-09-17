@@ -30,8 +30,11 @@ def run(stop_event,cola_frames,cola_audio):
     Orchestrator: coordina el flujo entre cámaras, YOLO
     y audio, con o sin tracking.
     """
-
+    pygame.init()
+    pygame.mixer.init()
+    audio = AudioSystem(audio_file="audio.mp3")
     logger.info("Orquestador iniciado")
+
     while not stop_event.is_set():
         try:       
             frame = cola_frames.get()
@@ -44,18 +47,13 @@ def run(stop_event,cola_frames,cola_audio):
             for box in results[0].boxes:    # Bucle de detecciones      results[0] indica la imagen actual      .boxes indica las bounding box
                 conf = float(box.conf[0])
                 print(f"{conf*100:.2f}")           # Guarda la confianza de las bounding box
-                if conf > 0.85:                     # si la conf es mayor a 84% reproduce un sonido y detiene el sistema hasta que termine este
-                    logging.info(f"Clase detectada con {conf*100:.2f}% de confianza")
-                    audio = AudioSystem(audio_file="audio.mp3")
+                if conf > 0.40:                     # si la conf es mayor a 84% reproduce un sonido y detiene el sistema hasta que termine este
+                    logger.info(f"Clase detectada con {conf*100:.2f}% de confianza")
                     if not cola_audio.empty():
-                        señal = cola_audio.get()
-                        if señal == "play_audio":
-                            audio.activar_reproduccion
-                    audio.gestionar_cola()
-                    time.sleep(0.1)
-
-                else:
-                    time.sleep(2)
+                        cola_audio.get()
+                        audio.activar_reproduccion()
+                        audio.gestionar_cola()
+                        time.sleep(3)
             
         except Exception as e:
             logger.error(f"Error en el orquestador: {e}")
