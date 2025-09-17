@@ -1,66 +1,59 @@
+import os
 import logging
 import time
 import ModulosGenerales.modulo_logging as modulo_logging 
 from ultralytics import YOLO
-from cameras_module import esta_trabajando,toma_frame
 from TareasFlujoPrincipal.audio_module import AudioSystem
 import cv2
+import pygame
+from config import THRESHOLD
 
-model = YOLO("best.pt")  # modelo YOLO
-roi_x1, roi_y1, roi_x2, roi_y2 = 320, 0, 640, 480   # Definir la zona de interés (x1, y1, x2, y2)
 
 
-#Declaracion de variables
-camara1 = cv2.VideoCapture(0)
-camara2 = cv2.VideoCapture(1)
+#Configuracion del modelo YOLO
+direccion_script = os.path.dirname(os.path.abspath(__file__))
+camino_modelo = os.path.join(direccion_script, "best.pt")
+modelo = YOLO(camino_modelo)  # modelo YOLO
+roi_x1, roi_y1, roi_x2, roi_y2 = 320, 0, 640, 480   
 
-"""
-from TareasFlujoPrincipal import cameras_module, yolo_module, audio_module, 
-from TareasSegundoPlano import oled_module
-"""
+
+
+#Configuracion del Logging
 modulo_logging.setup_logging()
 logger = logging.getLogger("snow").getChild("orchestrator")
 
+
+
 def run(stop_event,cola_frames,cola_audio):
 
-    
     """
     Orchestrator: coordina el flujo entre cámaras, YOLO
     y audio, con o sin tracking.
     """
-
+    pygame.init()
+    pygame.mixer.init()
+    audio = AudioSystem(audio_file="audio.mp3")
     logger.info("Orquestador iniciado")
 
     while not stop_event.is_set():
-        try:
-            if esta_trabajando:
-                toma_frame(camara1, camara2, cola_frames)
+        try:       
+            frame = cola_frames.get()
+            frame_roi = frame[roi_y1:roi_y2, roi_x1:roi_x2] # Extraer el ROI (recorte del frame)
+            frame_with_roi = frame.copy()   # La funcion copy realiza una copia de frame para evitar q al modificar alguno el otro se modifique
+            cv2.rectangle(frame_with_roi, (roi_x1, roi_y1), (roi_x2, roi_y2), (0, 255, 0), 2)
 
+            results = modelo(frame_roi)
 
-                frame = cola_frames.get()  # Espera hasta que haya un frame disponible en la cola
-                
-                frame_roi = frame[roi_y1:roi_y2, roi_x1:roi_x2] # Extraer el ROI (recorte del frame)
-
-                frame_with_roi = frame.copy()   # La funcion copy realiza una copia de frame para evitar q al modificar alguno el otro se modifique
-                cv2.rectangle(frame_with_roi, (roi_x1, roi_y1), (roi_x2, roi_y2), (0, 255, 0), 2)
-
-
-                results = model(frame_roi)                          # YOLO espera un array tipo imagen
-
-                for box in results[0].boxes:    # Bucle de detecciones      results[0] indica la imagen actual      .boxes indica las bounding box
-                    conf = float(box.conf[0])           # Guarda la confianza de las bounding box
-                    if conf > 0.85:                     # si la conf es mayor a 84% reproduce un sonido y detiene el sistema hasta que termine este
-                        logging.info(f"Clase detectada con {conf*100:.2f}% de confianza")
-                        audio = AudioSystem(audio_file="audio.mp3")
-                        if not cola_audio.empty():
-                            señal = cola_audio.get()
-                            if señal == "play_audio":
-                                audio.activar_reproduccion
+            for box in results[0].boxes:    # Bucle de detecciones      results[0] indica la imagen actual      .boxes indica las bounding box
+                conf = float(box.conf[0])
+                print(f"{conf*100:.2f}")           # Guarda la confianza de las bounding box
+                if conf > 0.40:                     # si la conf es mayor a 84% reproduce un sonido y detiene el sistema hasta que termine este
+                    logger.info(f"Clase detectada con {conf*100:.2f}% de confianza")
+                    if not cola_audio.empty():
+                        cola_audio.get()
+                        audio.activar_reproduccion()
                         audio.gestionar_cola()
-                        time.sleep(0.1)
-
-            else:
-                time.sleep(2)
+                        time.sleep(3)
             
         except Exception as e:
             logger.error(f"Error en el orquestador: {e}")

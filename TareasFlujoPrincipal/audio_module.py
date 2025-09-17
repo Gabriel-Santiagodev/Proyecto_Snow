@@ -49,8 +49,9 @@ def run(stop_event,cola_audio):
     reproductor = AudioSystem(audio_file="audio.mp3")
     while not stop_event.is_set():
         if not cola_audio.empty():
+            cola_audio.get()
             signal = cola_audio.get()
-            if signal == "play_audio":
+            if signal == "reproducir":
                 reproductor.activar_reproduccion()
         reproductor.gestionar_cola()
         time.sleep(0.1)
