@@ -1,0 +1,33 @@
+[Unit]
+Description=Sistema de Vigilancia Autónomo SADA
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/protocolo_deteccion
+ExecStart=/usr/bin/python3 /home/pi/protocolo_deteccion/sistema_vigilancia_autonomo.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Configuración para Raspberry Pi
+Environment=PYTHONPATH=/home/pi/protocolo_deteccion
+Environment=DISPLAY=:0
+
+# Configuración de recursos
+MemoryMax=512M
+CPUQuota=80%
+
+# Configuración de seguridad
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/home/pi/protocolo_deteccion
+
+[Install]
+WantedBy=multi-user.target
