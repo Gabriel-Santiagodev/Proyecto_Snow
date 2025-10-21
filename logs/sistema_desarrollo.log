@@ -30,3 +30,18 @@
 2025-10-17 10:57:03,669 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 100.0%
 2025-10-17 10:57:16,306 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
 2025-10-17 10:57:16,306 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
+2025-10-20 18:58:34,627 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-20 18:58:35,094 - sistema_vigilancia_desarrollo - ERROR - Error inicializando componentes: 'NoneType' object has no attribute 'isOpened'
+2025-10-20 18:58:54,623 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-20 18:58:54,961 - sistema_vigilancia_desarrollo - ERROR - Error inicializando componentes: 'NoneType' object has no attribute 'isOpened'
+2025-10-20 19:18:24,168 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-20 19:18:24,572 - sistema_vigilancia_desarrollo - ERROR - Error inicializando componentes: 'SistemaVigilanciaDesarrollo' object has no attribute 'cap'
+2025-10-20 19:19:26,141 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-20 19:19:26,524 - sistema_vigilancia_desarrollo - ERROR - Error inicializando componentes: 'SistemaVigilanciaDesarrollo' object has no attribute 'cap'
+2025-10-20 19:20:33,752 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-20 19:20:34,218 - sistema_vigilancia_desarrollo - ERROR - Error inicializando componentes: No se pudo abrir la cámara 2
+2025-10-20 19:21:08,050 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-20 19:21:08,477 - sistema_vigilancia_desarrollo - INFO - Cámara inicializada correctamente
+2025-10-20 19:21:08,478 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
+2025-10-20 19:24:49,681 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
+2025-10-20 19:24:49,682 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente

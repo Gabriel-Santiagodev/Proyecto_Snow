@@ -17,6 +17,7 @@ from pathlib import Path
 from ultralytics import YOLO
 import cv2
 import pygame
+import numpy as np
 
 class SistemaVigilanciaDesarrollo:
     def __init__(self):
@@ -32,7 +33,8 @@ class SistemaVigilanciaDesarrollo:
         
         # Componentes del sistema
         self.modelo = None
-        self.cap = None
+        self.camara1 = None
+        self.camara2 = None
         self.lock = threading.Lock()
         
         # Configuración de cámaras y ROIs
@@ -46,9 +48,14 @@ class SistemaVigilanciaDesarrollo:
             "camara1": "sonido_prueva0.mp3", 
             "camara2": "sonido_prueva2.mp3"
         }
+        self.umbral_obstruccion = 5000  # umbral para comprobar si hay obstruccion en las camaras
+        # Almacena el tiempo donde se hizo el ultimo chequeo de las camaras
+        self.ultimo_chequeo = time.time() 
+        # Tiempo en segundos de cada cuando se debe de hacer un chequeo de las camaras
+        self.intervalo_chequeo = 30  
         
         # Configuración de horarios
-        self.hora_inicio = self.config.get('hora_inicio', 6)  # 6 AM
+        self.hora_inicio = self.config.get('hora_inicio', 7)  # 7 AM
         self.hora_fin = self.config.get('hora_fin', 20)       # 8 PM
         
         # Inicializar componentes
@@ -114,6 +121,11 @@ class SistemaVigilanciaDesarrollo:
         self.detection_logger.addHandler(detection_handler)
         self.detection_logger.setLevel(logging.INFO)
 
+################################################################################
+#                            MÓDULO DE CÁMARAS                                 #
+#          Responsable: [Roberto Carlos Jimenez Rodriguez. ITIID-CD 01]        #
+################################################################################
+
     def inicializar_componentes(self):
         """Inicializa todos los componentes del sistema"""
         try:
@@ -125,25 +137,155 @@ class SistemaVigilanciaDesarrollo:
             self.logger.info("Modelo YOLO cargado correctamente")
             
             # Inicializar cámara
-            self.cap = cv2.VideoCapture(0)
-            if not self.cap.isOpened():
-                raise Exception("No se pudo abrir la cámara")
+            self.camara1 = cv2.VideoCapture(0)
+            if not self.camara1.isOpened():
+                raise Exception("No se pudo abrir la cámara 1")
+            else:
+                self.camara2 = self.camara1
+                if not self.camara2.isOpened():
+                    raise Exception("No se pudo abrir la cámara 2")
             
-            # Configurar cámara
-            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-            self.cap.set(cv2.CAP_PROP_FPS, 15)
+            # Configurar camara1
+            self.camara1.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+            self.camara1.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+            self.camara1.set(cv2.CAP_PROP_FPS, 15)
+            # Configurar camara2
+            self.camara2.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+            self.camara2.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+            self.camara2.set(cv2.CAP_PROP_FPS, 15)
             
             self.logger.info("Cámara inicializada correctamente")
             
         except Exception as e:
             self.logger.error(f"Error inicializando componentes: {e}")
             raise
+    
+    def tomar_frame(self):
+        """Captura frame de la cámara"""
+        try:
+            ret1, frame1 = self.camara1.read()
+            if not ret1:
+                raise Exception("Error capturando frame de la camara 1")
+            ret2, frame2 = self.camara2.read()
+            if not ret2: 
+                raise Exception("Error capturando frame de la camara 2")
+            return {
+                "camara1": frame1.copy(),
+                "camara2": frame2.copy()
+            }
+        except Exception as e:
+            self.logger.error(f"Error tomando frame: {e}")
+            return None
+
+    def deteccion_roi(self, frame, roi_x1, roi_y1, roi_x2, roi_y2):
+        """Realiza detección en región de interés"""
+        try:
+            frame_roi = frame[roi_y1:roi_y2, roi_x1:roi_x2]
+            results = self.modelo(frame_roi)
+            return results
+        except Exception as e:
+            self.logger.error(f"Error en detección ROI: {e}")
+            return None
+    
+    def limpiar_recursos(self):
+        """Limpia todos los recursos del sistema"""
+        try:
+            if self.camara1:
+                self.camara1.release()
+            # Despues de hacer pruebas y tener las 2 camaras funcionando, vamos a cambiar este if por solo "if self.camara2:"
+            if self.camara2 and self.camara2 != self.camara2:
+                self.camara2.release()
+            cv2.destroyAllWindows()
+            self.logger.info("Recursos limpiados correctamente")
+        except Exception as e:
+            self.logger.error(f"Error limpiando recursos: {e}")
+
+    # Funcion para comprobar si hay obstrucciones
+    def obstruccion(self, camara):
+
+        #Captura de 2 frames en distintos periodos de tiempo
+        ret1, frame1 = camara.read()
+        if not ret1:
+            self.logger.error("Error leyendo primer frame para obstrucción")
+            return True
+        time.sleep(0.1)
+        ret2, frame2 = camara.read()
+        if not ret2:
+            self.logger.error("Error leyendo segundo frame para obstrucción")
+            return True
+        
+        escalagrises1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+        escalagrises2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
+
+        #Calculo del cambio de valores (pixeles) entre cada frame
+        diferencia = cv2.absdiff(escalagrises1, escalagrises2)
+        total_cambio = np.sum(diferencia)
+
+        #Print para buscar el THRESHOLD perfecto segun las condiciones de nuestro proyecto. 
+        # Este print es temporal Y SERA ELIMINADO
+        self.logger.debug(f"Cambio detectado en cámara: {total_cambio}")
+
+        #Comprobacion de obstruccion
+        return self.umbral_obstruccion > total_cambio
+
+    #Funcion para revisar si hay problemas en las camaras
+    def verificar_camaras(self, cam1, cam2):
+
+        #Error al abrir ambas camaras
+        if not cam1.isOpened() and not cam2.isOpened():
+            self.logger.error("Ninguna de las camaras se pudo abrir")
+            return False
+        #Error al abrir la camara 1
+        elif not cam1.isOpened():
+            self.logger.warning("Camara 1 no se pudo abrir")
+            return False
+        #Error al abrir la camara 2
+        elif not cam2.isOpened():
+            self.logger.warning("Camara 2 no se pudo abrir")
+            return False
+
+        #Comprobacion de obstruccion en ambas camaras
+        obstruccion_cam1 = self.obstruccion(cam1)
+        obstruccion_cam2 = self.obstruccion(cam2)
+
+        #Error de obstrucion en ambas camaras
+        if obstruccion_cam1 and obstruccion_cam2:
+            self.logger.critical("Ambas camaras obstruidas")
+            return False
+        #Error de obstrucion en camara 1
+        elif obstruccion_cam1:
+            self.logger.error("Camara 1 obstruida")
+            return False  
+        #Error de obstrucion en camara 2
+        elif obstruccion_cam2:
+            self.logger.error("Camara 2 obstruida")
+            return False
+        else:
+            return True 
+
+################################################################################
+#                          FIN MÓDULO DE CÁMARAS                               #
+#          Responsable: [Roberto Carlos Jimenez Rodriguez. ITIID-CD 01]        #
+################################################################################
+
+
+
+################################################################################
+#                            AHORRO DE ENERGIA                                 #
+#          Responsable: [Roberto Carlos JImenez Rodriguez. ITIID-CD 01]        #
+################################################################################
 
     def es_horario_activo(self):
         """Verifica si el sistema debe estar activo según la hora"""
         hora_actual = datetime.datetime.now().hour
         return self.hora_inicio <= hora_actual < self.hora_fin
+
+################################################################################
+#                          FIN AHORRO DE ENERGIA                               #
+#          Responsable: [Roberto Carlos Jimenez Rodriguez. ITIID-CD 01]        #
+################################################################################
+
+
 
     def verificar_estado_sistema(self):
         """Monitorea la salud del sistema"""
@@ -175,41 +317,6 @@ class SistemaVigilanciaDesarrollo:
         self.sistema_activo = False
         self.limpiar_recursos()
         sys.exit(0)
-
-    def limpiar_recursos(self):
-        """Limpia todos los recursos del sistema"""
-        try:
-            if self.cap:
-                self.cap.release()
-            cv2.destroyAllWindows()
-            self.logger.info("Recursos limpiados correctamente")
-        except Exception as e:
-            self.logger.error(f"Error limpiando recursos: {e}")
-
-    def tomar_frame(self):
-        """Captura frame de la cámara"""
-        try:
-            ret, frame = self.cap.read()
-            if not ret:
-                raise Exception("Error capturando frame")
-            
-            return {
-                "camara1": frame.copy(),
-                "camara2": frame.copy()
-            }
-        except Exception as e:
-            self.logger.error(f"Error tomando frame: {e}")
-            return None
-
-    def deteccion_roi(self, frame, roi_x1, roi_y1, roi_x2, roi_y2):
-        """Realiza detección en región de interés"""
-        try:
-            frame_roi = frame[roi_y1:roi_y2, roi_x1:roi_x2]
-            results = self.modelo(frame_roi)
-            return results
-        except Exception as e:
-            self.logger.error(f"Error en detección ROI: {e}")
-            return None
 
     def dibujar_ventanas(self, cam_name, frame, results, roi_x1, roi_y1, roi_x2, roi_y2):
         """Dibuja ventanas de visualización"""
@@ -291,6 +398,14 @@ class SistemaVigilanciaDesarrollo:
             
             while self.sistema_activo:
                 try:
+
+                    # Verificar si hay problemas en las camaras
+                    if time.time() - self.ultimo_chequeo > self.intervalo_chequeo:
+                        if not self.verificar_camaras(self.camara1, self.camara2):
+                            time.sleep(2)
+                            continue
+                        self.ultimo_chequeo = time.time()
+
                     # Verificar si es horario activo
                     if not self.es_horario_activo():
                         self.logger.info("Fuera del horario activo, sistema en standby")
