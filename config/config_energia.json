@@ -1,0 +1,30 @@
+{
+    "modo_ahorro_activo": true,
+    "cpu_max_ahorro": 60,
+    "fps_ahorro": 10,
+    "resolucion_ahorro": [320, 240],
+    "temperatura_max": 65,
+    "bateria_minima": 20,
+    "horario_ahorro": {
+        "inicio": 22,
+        "fin": 6
+    },
+    "ajustes_dinamicos": true,
+    "monitoreo_intervalo": 30,
+    "frecuencias_cpu": {
+        "ahorro": 600,
+        "normal": 1000,
+        "rendimiento": 1500
+    },
+    "brillo_pantalla": {
+        "ahorro": 30,
+        "normal": 70,
+        "rendimiento": 100
+    },
+    "componentes_desactivar_ahorro": [
+        "bluetooth",
+        "wifi-powersave",
+        "usb_storage",
+        "avahi-daemon"
+    ]
+}

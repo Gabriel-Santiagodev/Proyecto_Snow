@@ -1,0 +1,3 @@
+2025-10-16 09:42:48,381 - ERROR - Error inicializando módulo GSM: module 'serial' has no attribute 'Serial'
+2025-10-16 09:42:48,381 - ERROR - Error enviando comando AT: 'NoneType' object has no attribute 'write'
+2025-10-16 09:42:48,382 - ERROR - Error leyendo respuesta: 'NoneType' object has no attribute 'in_waiting'

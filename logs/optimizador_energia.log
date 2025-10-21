@@ -1,0 +1,10 @@
+2025-10-16 10:09:42,393 - INFO - Estado: Batería=85%, Temp=45.0°C, CPU=13.3%
+2025-10-16 10:09:42,393 - INFO - Ajustando cámara para rendimiento: 15fps, [640, 480]
+2025-10-16 10:28:23,377 - ERROR - Error evaluando estado del sistema: '<' not supported between instances of 'NoneType' and 'int'
+2025-10-16 10:28:24,379 - ERROR - Error evaluando estado del sistema: '<' not supported between instances of 'NoneType' and 'int'
+2025-10-16 10:28:40,432 - ERROR - Error evaluando estado del sistema: '<' not supported between instances of 'NoneType' and 'int'
+2025-10-16 10:28:41,433 - ERROR - Error evaluando estado del sistema: '<' not supported between instances of 'NoneType' and 'int'
+2025-10-16 10:29:20,445 - INFO - Estado: Batería=85%, Temp=13.0°C, CPU=9.7%
+2025-10-16 10:29:20,445 - INFO - Ajustando cámara para rendimiento: 15fps, [640, 480]
+2025-10-16 10:37:02,461 - INFO - Estado: Batería=89%, Temp=45.0°C, CPU=6.8%
+2025-10-16 10:37:02,462 - INFO - Ajustando cámara para rendimiento: 15fps, [640, 480]

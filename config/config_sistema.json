@@ -1,0 +1,38 @@
+{
+    "hora_inicio": 6,
+    "hora_fin": 20,
+    "umbral_confianza": 0.83,
+    "ventana_tiempo": 5,
+    "max_reinicios": 5,
+    "pin_led_status": 18,
+    "pin_boton_emergencia": 24,
+    "pin_buzzer": 25,
+    "log_rotation_days": 7,
+    "heartbeat_interval": 30,
+    "modo_ahorro_energia": true,
+    "fps_camara": 15,
+    "resolucion_camara": {
+        "ancho": 640,
+        "alto": 480
+    },
+    "rois": {
+        "camara1": [400, 0, 640, 480],
+        "camara2": [0, 0, 300, 480]
+    },
+    "sonidos": {
+        "camara1": "sonido_prueva0.mp3",
+        "camara2": "sonido_prueva2.mp3",
+        "emergencia": "sonido_emergencia.mp3"
+    },
+    "monitoreo": {
+        "cpu_max": 90,
+        "memoria_max": 85,
+        "temperatura_max": 70,
+        "disco_max": 90
+    },
+    "reinicio_automatico": {
+        "habilitado": true,
+        "max_intentos": 5,
+        "tiempo_espera": 5
+    }
+}
