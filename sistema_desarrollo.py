@@ -18,6 +18,7 @@ from ultralytics import YOLO
 import cv2
 import pygame
 import numpy as np
+from optimizador_energia import OptimizadorEnergia
 
 class SistemaVigilanciaDesarrollo:
     def __init__(self):
@@ -30,6 +31,7 @@ class SistemaVigilanciaDesarrollo:
         self.ultimo_heartbeat = time.time()
         self.contador_reinicios = 0
         self.max_reinicios = 5
+        self.optimizador = OptimizadorEnergia()  
         
         # Componentes del sistema
         self.modelo = None
@@ -181,7 +183,7 @@ class SistemaVigilanciaDesarrollo:
         """Realiza detección en región de interés"""
         try:
             frame_roi = frame[roi_y1:roi_y2, roi_x1:roi_x2]
-            results = self.modelo(frame_roi)
+            results = self.modelo(frame_roi, verbose=False)
             return results
         except Exception as e:
             self.logger.error(f"Error en detección ROI: {e}")
@@ -274,7 +276,10 @@ class SistemaVigilanciaDesarrollo:
 #                            AHORRO DE ENERGIA                                 #
 #          Responsable: [Roberto Carlos JImenez Rodriguez. ITIID-CD 01]        #
 ################################################################################
-
+    
+    def leer_bateria(self):
+        return self.optimizador.leer_nivel_bateria()
+    
     def es_horario_activo(self):
         """Verifica si el sistema debe estar activo según la hora"""
         hora_actual = datetime.datetime.now().hour
