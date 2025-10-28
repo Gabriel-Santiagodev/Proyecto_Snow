@@ -1,32 +1,7 @@
-2025-10-15 16:08:09,517 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
-2025-10-15 16:08:21,585 - sistema_vigilancia_desarrollo - INFO - Cï¿½mara inicializada correctamente
-2025-10-15 16:08:21,588 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
-2025-10-15 16:08:53,596 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 97.1%
-2025-10-15 16:09:24,599 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 95.4%
-2025-10-15 16:09:46,724 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-15 16:09:46,733 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-15 19:47:05,170 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
-2025-10-15 19:47:12,895 - sistema_vigilancia_desarrollo - INFO - Cï¿½mara inicializada correctamente
-2025-10-15 19:47:12,896 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
-2025-10-15 19:47:44,902 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 100.0%
-2025-10-15 19:48:07,620 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-15 19:48:07,621 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-16 09:30:51,341 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
-2025-10-16 09:30:59,262 - sistema_vigilancia_desarrollo - INFO - Cï¿½mara inicializada correctamente
-2025-10-16 09:30:59,263 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
-2025-10-16 09:31:31,267 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 100.0%
-2025-10-16 09:31:51,202 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-16 09:31:51,203 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-16 09:36:13,573 - sistema_vigilancia_desarrollo - ERROR - Error inicializando componentes: [Errno 2] No such file or directory: 'best.pt'
-2025-10-16 09:36:44,356 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
-2025-10-16 09:36:51,284 - sistema_vigilancia_desarrollo - INFO - Cï¿½mara inicializada correctamente
-2025-10-16 09:36:51,285 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
-2025-10-16 09:37:11,571 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-16 09:37:11,572 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-17 10:55:53,624 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
-2025-10-17 10:56:00,653 - sistema_vigilancia_desarrollo - INFO - Cï¿½mara inicializada correctamente
-2025-10-17 10:56:00,657 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
-2025-10-17 10:56:32,661 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 95.0%
-2025-10-17 10:57:03,669 - sistema_vigilancia_desarrollo - WARNING - CPU alta: 100.0%
-2025-10-17 10:57:16,306 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
-2025-10-17 10:57:16,306 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente
+
+2025-10-27 18:00:46,721 - sistema_vigilancia_desarrollo - INFO - Modelo YOLO cargado correctamente
+2025-10-27 18:00:47,090 - sistema_vigilancia_desarrollo - INFO - Cámara inicializada correctamente
+2025-10-27 18:00:47,092 - sistema_vigilancia_desarrollo - INFO - Módulo OLED iniciado
+2025-10-27 18:00:47,092 - sistema_vigilancia_desarrollo - INFO - Sistema iniciado correctamente
+2025-10-27 18:00:52,973 - sistema_vigilancia_desarrollo - INFO - Módulo OLED detenido
+2025-10-27 18:00:53,486 - sistema_vigilancia_desarrollo - INFO - Recursos limpiados correctamente

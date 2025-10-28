@@ -17,6 +17,7 @@ from pathlib import Path
 from ultralytics import YOLO
 import cv2
 import pygame
+import TareasSegundoPlano.oled_module as oled_module
 
 class SistemaVigilanciaDesarrollo:
     def __init__(self):
@@ -26,6 +27,7 @@ class SistemaVigilanciaDesarrollo:
         
         # Estado del sistema
         self.sistema_activo = True
+        self.recursos_limpiados = False
         self.ultimo_heartbeat = time.time()
         self.contador_reinicios = 0
         self.max_reinicios = 5
@@ -59,6 +61,9 @@ class SistemaVigilanciaDesarrollo:
         signal.signal(signal.SIGINT, self.manejar_terminacion)
         
         logging.info("🚀 Sistema de Vigilancia - Modo Desarrollo iniciado")
+        
+        # Evento para controlar el módulo OLED
+        self.stop_event = threading.Event()
 
     def cargar_configuracion(self):
         """Carga configuración desde archivo JSON"""
@@ -178,10 +183,21 @@ class SistemaVigilanciaDesarrollo:
 
     def limpiar_recursos(self):
         """Limpia todos los recursos del sistema"""
+        if self.recursos_limpiados:
+            return
+        
+        self.recursos_limpiados = True
+        
         try:
+            # Detener módulo OLED
+            self.stop_event.set()
+            self.logger.info("Módulo OLED detenido")
+            time.sleep(0.5)
+            
             if self.cap:
                 self.cap.release()
             cv2.destroyAllWindows()
+            cv2.waitKey(1)
             self.logger.info("Recursos limpiados correctamente")
         except Exception as e:
             self.logger.error(f"Error limpiando recursos: {e}")
@@ -284,6 +300,15 @@ class SistemaVigilanciaDesarrollo:
             heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
             heartbeat_thread.start()
             
+            # Iniciar módulo OLED
+            oled_thread = threading.Thread(
+                target=oled_module.run, 
+                args=(self.stop_event,), 
+                daemon=True
+            )
+            oled_thread.start()
+            self.logger.info("Módulo OLED iniciado")
+            
             self.logger.info("Sistema iniciado correctamente")
             print("🎯 Sistema de Vigilancia Snow - Modo Desarrollo")
             print("📋 Presiona ESC para salir")
@@ -304,6 +329,10 @@ class SistemaVigilanciaDesarrollo:
                         self.logger.error("Error capturando frame, reintentando...")
                         time.sleep(1)
                         continue
+                    
+                    # Verificar si se solicitó detener el sistema desde OLED
+                    if self.stop_event.is_set():
+                        break
                     
                     # Procesar cada cámara
                     for cam_name, frame in cola_frames.items():
