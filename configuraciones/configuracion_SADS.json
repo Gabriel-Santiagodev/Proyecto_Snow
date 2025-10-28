@@ -1,0 +1,23 @@
+{
+    "dibujar_pantalla": true,
+    "modelo": "best.pt",
+    "ventana_tiempo": 5,
+    "rois": {
+        "camara1": [
+            400,
+            0,
+            640,
+            480
+        ],
+        "camara2": [
+            0,
+            0,
+            300,
+            480
+        ]
+    },
+    "sound_path": {
+        "camara1": "sonido_prueva0.mp3",
+        "camara2": "sonido_prueva2.mp3"
+    }
+}

@@ -1,0 +1,22 @@
+2025-10-27 17:38:55,102 - INFO /// camara detenida por run horario
+2025-10-27 17:39:09,526 - INFO /// Clase detectada con 87.14% de confianza de  //camara1
+2025-10-27 17:39:12,593 - INFO /// Clase detectada con 83.67% de confianza de  //camara2
+2025-10-27 17:39:13,594 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en camara2)
+2025-10-27 17:39:17,214 - INFO /// camara detenida por run horario
+2025-10-27 17:39:30,928 - INFO /// Clase detectada con 89.61% de confianza de  //camara2
+2025-10-27 17:39:34,396 - INFO /// Clase detectada con 83.88% de confianza de  //camara1
+2025-10-27 17:39:35,397 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en camara1)
+2025-10-27 17:39:39,268 - INFO /// camara detenida por run horario
+2025-10-27 18:06:28,191 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 18:07:24,903 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 18:11:33,940 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 18:13:27,022 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 18:17:21,938 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 18:18:02,858 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 20:26:35,355 - INFO /// camara detenida por run horario
+2025-10-27 20:26:57,543 - INFO /// camara detenida por run horario
+2025-10-27 20:27:19,510 - INFO /// camara detenida por run horario
+2025-10-27 20:27:41,531 - INFO /// camara detenida por run horario
+2025-10-27 20:28:03,444 - INFO /// camara detenida por run horario
+2025-10-27 20:29:12,072 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-27 20:30:05,299 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul

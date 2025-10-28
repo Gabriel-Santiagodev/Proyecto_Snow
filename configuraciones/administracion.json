@@ -1,0 +1,6 @@
+{
+    "temperatura_max": 65,
+    "bateria_minima": 20,
+    "inicio_de_trabajo": 6,
+    "fin_de_trabajo": 22
+}

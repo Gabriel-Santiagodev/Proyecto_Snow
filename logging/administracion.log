@@ -1,0 +1,62 @@
+2025-10-27 17:50:28,028 - INFO /// Estado del equipo; {'bateria': 50, 'temperatura': 25, 'memoria': 54.9, 'cpu_uso': 2.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 17:50:31,639 - INFO /// Estado del equipo; {'bateria': 50, 'temperatura': 25, 'memoria': 55.2, 'cpu_uso': 9.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 17:50:31,639 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 17:50:42,641 - INFO /// Estado del equipo; {'bateria': 50, 'temperatura': 25, 'memoria': 56.7, 'cpu_uso': 92.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 17:50:53,642 - INFO /// Estado del equipo; {'bateria': 50, 'temperatura': 25, 'memoria': 56.7, 'cpu_uso': 96.8, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:06:14,063 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 54.8, 'cpu_uso': 4.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:06:28,188 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.2, 'cpu_uso': 7.6, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:06:31,906 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.3, 'cpu_uso': 14.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:06:31,906 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:06:42,907 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.8, 'cpu_uso': 96.6, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:07:08,640 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 54.6, 'cpu_uso': 8.8, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:07:12,186 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 54.8, 'cpu_uso': 5.1, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:07:12,186 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:07:24,900 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 54.6, 'cpu_uso': 3.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:07:38,561 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 54.8, 'cpu_uso': 7.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:07:38,561 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:07:49,562 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.4, 'cpu_uso': 91.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:11:33,936 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.9, 'cpu_uso': 4.1, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:11:37,604 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.0, 'cpu_uso': 2.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:11:37,604 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:11:48,606 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 57.3, 'cpu_uso': 94.8, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:11:59,608 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 57.3, 'cpu_uso': 90.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:01,623 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.4, 'cpu_uso': 2.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:05,266 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.2, 'cpu_uso': 4.7, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:05,267 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:13:16,269 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.5, 'cpu_uso': 95.7, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:27,019 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.2, 'cpu_uso': 7.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:30,705 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.2, 'cpu_uso': 8.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:30,705 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:13:41,709 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.5, 'cpu_uso': 95.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:13:52,710 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.6, 'cpu_uso': 94.0, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:14:03,713 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.7, 'cpu_uso': 96.0, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:17:21,935 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.0, 'cpu_uso': 3.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:17:25,594 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.3, 'cpu_uso': 1.7, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:17:25,594 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:17:36,595 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.7, 'cpu_uso': 97.7, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:17:47,596 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.8, 'cpu_uso': 91.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:18:02,854 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.5, 'cpu_uso': 4.1, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:18:06,477 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 55.6, 'cpu_uso': 5.3, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:18:06,477 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 18:18:17,481 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 56.8, 'cpu_uso': 93.5, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 18:18:28,482 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 57.0, 'cpu_uso': 95.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:26:19,582 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 51.5, 'cpu_uso': 14.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:26:24,183 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 51.6, 'cpu_uso': 9.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:26:24,183 - INFO /// Aplicando optimizaciones de rendimiento
+2025-10-27 20:26:35,185 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 53.3, 'cpu_uso': 97.6, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:26:46,186 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 53.2, 'cpu_uso': 8.7, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:26:46,187 - INFO /// iniciando camaras por horario
+2025-10-27 20:26:57,189 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 53.3, 'cpu_uso': 100.0, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:27:08,193 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 52.4, 'cpu_uso': 18.5, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:27:08,194 - INFO /// iniciando camaras por horario
+2025-10-27 20:27:19,196 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 52.4, 'cpu_uso': 98.5, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:27:30,197 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 52.4, 'cpu_uso': 18.1, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:27:30,197 - INFO /// iniciando camaras por horario
+2025-10-27 20:27:41,199 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 52.3, 'cpu_uso': 97.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:27:52,201 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 52.3, 'cpu_uso': 22.2, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:27:52,201 - INFO /// iniciando camaras por horario
+2025-10-27 20:28:03,204 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 52.4, 'cpu_uso': 99.1, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:29:12,067 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 51.0, 'cpu_uso': 15.5, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:30:05,293 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 51.6, 'cpu_uso': 20.4, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:30:23,759 - INFO /// Estado del equipo: {'bateria': 50, 'temperatura': 25, 'memoria': 51.7, 'cpu_uso': 13.9, 'necesita_ahorro': False, 'puede_rendimiento': False}
+2025-10-27 20:30:23,759 - INFO /// Aplicando optimizaciones de rendimiento
