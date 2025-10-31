@@ -345,17 +345,29 @@ class SADS:
         except FileNotFoundError:           # si no esvuentra el archivo pone por defecto:
             self.logging.error(f"No se encontro el archivo de configuracion, cargando por defaul")
             config_default = {
+                "nombre": "camara",
                 "dibujar_pantalla": True,
                 "modelo": "best.pt",
                 "ventana_tiempo": 5,
                 "rois": {
-                    "captura1": [400, 0, 640, 480],
-                    "captura2": [0, 0, 300, 480]
+                    "captura1": [
+                        400,
+                        0,
+                        640,
+                        480
+                    ],
+                    "captura2": [
+                        0,
+                        0,
+                        300,
+                        480
+                    ]
                 },
                 "sound_path": {
                     "captura1": "sonido_prueva0.mp3",
                     "captura2": "sonido_prueva2.mp3"
-                }
+                },
+                "input" : 0
             }
             with open(config_file, 'w') as f:
                 json.dump(config_default, f, indent=4)

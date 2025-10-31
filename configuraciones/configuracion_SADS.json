@@ -20,5 +20,6 @@
     "sound_path": {
         "captura1": "sonido_prueva0.mp3",
         "captura2": "sonido_prueva2.mp3"
-    }
+    },
+    "input" : 0
 }
