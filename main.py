@@ -14,18 +14,18 @@ from tkinter import messagebox
 
 run = None
 lock_sistema = threading.Lock()
-lock_protocolo = threading.Lock()
 lock_control_evento = threading.Lock()
-lock_SADS = threading.Lock()
+
 
 class ErrorSignalHandler(logging.Handler):
     def __init__(self, evento_error, nivel_minimo=logging.WARNING):
         super().__init__()
-        self.evento_error = evento_error
+        self.evento_error = evento_error        # Si hay un error enviara un mensaje 
         self.nivel_minimo = nivel_minimo
-        self.error_activo = False
+        self.error_activo = False               # Determina si hay un error fatal 
 
     def emit(self, record):
+        """Determina si el nivel de peligro es suficiente para registrarlo"""
         if record.levelno >= self.nivel_minimo:
             if not self.error_activo:  # evita múltiples ventanas seguidas
                 self.error_activo = True
@@ -39,7 +39,8 @@ class ErrorSignalHandler(logging.Handler):
                 pass
 
     def sign(self, record):
-        """Ventana emergente al detectar error o warning"""
+        """Metodo para mandar menzaje de error (Actualmente esta incompleto o mal pensado)
+        muestra una ventana de error (buscar otra manera de enviar mensaje)"""
         # Crear ventana temporal (invisible)
         root = tk.Tk()
         root.withdraw()
@@ -60,9 +61,9 @@ class ErrorSignalHandler(logging.Handler):
 
 
 class Sistema:
-    def __init__(self, evento, evento_error, config_file="configuraciones/administracion.json"):
-        self.evento = evento
-        self.evento_error = evento_error
+    def __init__(self, config_file="configuraciones/administracion.json"):
+        self.evento = threading.Event()
+        self.evento_error = threading.Event()
         self.logging = self.setup_logging()
         self.config = self.cargar_configuracion(config_file)
         self.estado = self.leer_estado()
@@ -70,6 +71,7 @@ class Sistema:
         self.last_run = None
 
     def setup_logging(self):
+        """Metodo de logging, especializado para registar unicamnete con esta clase"""
         logger = logging.getLogger("Sistema")
         logger.setLevel(logging.DEBUG)
 
@@ -87,7 +89,7 @@ class Sistema:
         return logger
 
     def cargar_configuracion(self, config_file):
-        """Carga configuración de optimización energética"""
+        """Carga configuración de la clase"""
         try:
             with open(config_file, 'r') as f:
                 return json.load(f)                 # Carga los datos
@@ -104,6 +106,7 @@ class Sistema:
             return config_default
 
     def leer_estado(self):
+        """Se encarga de leer la bateria, temperatura, memoria y uso de cpu"""
         try:
             # with open('/sys/class/power_supply/battery/capacity', 'r') as bateria:  # Para Raspberry Pi con UPS/batería
             #         bateria = int(bateria.read().strip())
@@ -146,6 +149,7 @@ class Sistema:
             return None
 
     def ajustar_frecuencia_cpu(self, frecuencia):
+        """Ajusta la frecuencia del cpu"""
         try:
             cmd = f"sudo cpufreq-set -f {frecuencia}MHz"        # Comando en linux para cambiarla frecuencia de CPU:  sudo cpufreq-set -f {frecuencia}MHz
             subprocess.run(cmd, shell=True, check=True)
@@ -154,6 +158,7 @@ class Sistema:
             return False
 
     def ajustar_brillo_pantalla(self, brillo):
+        """Ajusta el brillo de la pantalla"""
         try:
             # Para pantallas compatibles
             cmd = f"sudo sh -c 'echo {brillo} > /sys/class/backlight/rpi_backlight/brightness'"
@@ -207,7 +212,8 @@ class Sistema:
             logging.error(f"Error reactivando componentes: {e}")
             return False
 
-    def administrador_rendimiento(self):       # Esta funcion esta conectada a control de tiempo ya que se ejecuta constantemente
+    def administrador_rendimiento(self):
+        """Administra el rendimiento y determina si es necesario aplicar o desactivar un ahorro energetico"""
         global run
         cambio_actual = (self.estado['necesita_ahorro'], self.estado['puede_rendimiento'])
 
@@ -257,6 +263,7 @@ class Sistema:
 
     #      threading 
     def control_tiempo(self):
+        """Metodo principal de la clase, se encaga de correr oras funciones con el horario de trabajo"""
         global run
         
         with lock_sistema:
@@ -281,6 +288,7 @@ class Sistema:
                 time.sleep(10)          # Cada cuanto se realiza una verificacion del tiempo
     
     def control_evento(self):
+        """Evita la ejecucion continua de run"""
         global run
         with lock_control_evento:
 
@@ -295,23 +303,25 @@ class Sistema:
 
 
 class SADS:
-    def __init__(self, evento, evento_error, config_file="configuraciones/configuracion_SADS.json"):
+    def __init__(self, evento, evento_error, config_file="configuraciones/configuracion_SADS.json", camara = True):
         self.evento = evento
         self.evento_error = evento_error
-        self.logging = self.setup_logging()
+        self.logging = self.setup_logging()                         # Configuracion de logger 
         self.configuracion = self.cargar_configuracion(config_file)
-        self.detecto = {"camara1": False, "camara2": False}
-        self.camara = cv2.VideoCapture(0)  
+        self.nombre = self.configuracion["nombre"]
+        self.detecto = {"captura1": False, "captura2": False}
+        self.camara = cv2.VideoCapture(self.cargar_configuracion["input"]) if camara == True else camara        # abrira una camara especificada en su configuracion
 
         self.modelo = YOLO(self.configuracion['modelo'])
 
-        # {"camara1": (400, 0, 640, 480),"camara2": (0, 0, 300, 480),}
-        self.roys = {cam: tuple(coords) for cam, coords in self.configuracion['rois'].items()}
+        self.roys = {cam: tuple(coords) for cam, coords in self.configuracion['rois'].items()}      # Carga los roys en diccionarios de configuracion
+        self.sound_path = self.configuracion['sound_path']      # Carga los sonidos en diccionarios de configuracion
 
-        # {"camara1": "sonido_prueva0.mp3", "camara2": "sonido_prueva2.mp3"}
-        self.sound_path = self.configuracion['sound_path']
+        self.lock_SADS = threading.Lock()           # Asigna los lock (Estructura de codigo que modifican variables de forma segura)
+        self.lock_protocolo = threading.Lock()
 
     def setup_logging(self):
+        """Metodo de logging, especializado para registar unicamnete con esta clase"""
         logger = logging.getLogger("SADS")
         logger.setLevel(logging.DEBUG)
 
@@ -321,14 +331,14 @@ class SADS:
             file_handler.setFormatter(formatter)
             logger.addHandler(file_handler)
 
-            # 🔔 Handler que dispara el mismo evento
+            # Handler que dispara el mismo evento
             signal_handler = ErrorSignalHandler(self.evento_error)
             logger.addHandler(signal_handler)
 
         return logger
 
     def cargar_configuracion(self, config_file):
-        """Carga configuración de optimización energética"""
+        """Carga configuración de la clase"""
         try:
             with open(config_file, 'r') as f:
                 return json.load(f)                 # Carga los datos
@@ -339,19 +349,20 @@ class SADS:
                 "modelo": "best.pt",
                 "ventana_tiempo": 5,
                 "rois": {
-                    "camara1": [400, 0, 640, 480],
-                    "camara2": [0, 0, 300, 480]
+                    "captura1": [400, 0, 640, 480],
+                    "captura2": [0, 0, 300, 480]
                 },
                 "sound_path": {
-                    "camara1": "sonido_prueva0.mp3",
-                    "camara2": "sonido_prueva2.mp3"
+                    "captura1": "sonido_prueva0.mp3",
+                    "captura2": "sonido_prueva2.mp3"
                 }
             }
             with open(config_file, 'w') as f:
                 json.dump(config_default, f, indent=4)
             return config_default
 
-    def toma_frame(self):                       #Captura de frames para una sola camara
+    def toma_frame(self):
+        """Captura los frames de las capturas y las devuelve como diccionarios """
         ret, frame = self.camara.read()
 
         if not self.camara.isOpened():
@@ -360,15 +371,16 @@ class SADS:
 
         if ret:
             cola_frames = {         #Diccionario para almacenar el frame duplicado
-                "camara1": frame.copy(),
-                "camara2": frame.copy()
+                "captura1": frame.copy(),
+                "captura2": frame.copy()
             }
             return cola_frames     #Almacenamiento de frames en la cola
         return None
 
-    def detecion_roi(self, nombre_camara, frame):
+    def detecion_roi(self, nombre_captura, frame):
+        """Se asegura de de que el modelo se aplique a la region de interes (roy)"""
 
-        roi_x1, roi_y1, roi_x2, roi_y2 = self.roys[nombre_camara]
+        roi_x1, roi_y1, roi_x2, roi_y2 = self.roys[nombre_captura]
 
         frame_roi = frame[roi_y1:roi_y2, roi_x1:roi_x2]     # Extraer ROI
 
@@ -377,60 +389,63 @@ class SADS:
 
         return results
 
-    def dibujo (self, nombre_camara, frame, results):      # dibuja la pantalla principal y la roi
+    def dibujo (self, nombre_captura, frame, results):
+        """Dibuja la pantalla principal y los roys si es ta configudaro de tal forma"""
 
         if self.configuracion["dibujar_pantalla"]:
         
-            roi_x1, roi_y1, roi_x2, roi_y2 = self.roys[nombre_camara]
+            roi_x1, roi_y1, roi_x2, roi_y2 = self.roys[nombre_captura]
 
             cv2.rectangle(frame, (roi_x1, roi_y1), (roi_x2, roi_y2), (0, 255, 0), 2)
 
             annotated_frame = results[0].plot()             # Dibuja las predicciones sobre el frame
 
-            cv2.imshow(f"{nombre_camara} - Frame completo", frame)      # Mostrar ventanas
-            cv2.imshow(f"{nombre_camara} - ROI", annotated_frame)
+            cv2.imshow(f"{self.nombre} - Frame completo", frame)      # Mostrar ventanas
+            cv2.imshow(f"{self.nombre} /// {nombre_captura} - ROI", annotated_frame)
 
-    def protocolo_detecion(self, nombre_camara):       # Cordina las camaras y detecciones con audio
+    def protocolo_detecion(self, nombre_captura):
+        """Cordina las camaras y detecciones """
         contador =0
-        otra = "camara2" if nombre_camara == "camara1" else "camara1"    # identifica la otra camara 
-        self.detecto[nombre_camara] = True
+        otra = "captura2" if nombre_captura == "captura1" else "captura1"    # identifica la otra camara 
+        self.detecto[nombre_captura] = True
 
-        while self.detecto[nombre_camara] and contador < self.configuracion['ventana_tiempo']:
+        while self.detecto[nombre_captura] and contador < self.configuracion['ventana_tiempo']:
             time.sleep(1)
             contador += 1
-            with lock_protocolo:  # Solo protege la parte que modifica cosas
+            with self.lock_protocolo:  # Solo protege la parte que modifica cosas
             # Revisa sin lock, lectura no destructiva
-                if self.detecto[nombre_camara] and self.detecto[otra]:
+                if self.detecto[nombre_captura] and self.detecto[otra]:
                     
-                    self.logging.info(f"🚨 Alarma disparada con {contador}s (ultima deteccion en {nombre_camara})")
-                    pygame.mixer.music.load(self.sound_path[nombre_camara])
+                    self.logging.info(f"🚨 Alarma disparada con {contador}s (ultima deteccion en {nombre_captura} /// {self.nombre})")
+                    pygame.mixer.music.load(self.sound_path[nombre_captura])
                     pygame.mixer.music.play()
                     while pygame.mixer.music.get_busy():
                         pygame.time.Clock().tick(10)
-                    self.detecto[nombre_camara] = False
+                    self.detecto[nombre_captura] = False
                     self.detecto[otra] = False
                   
                 break
     
     def sads(self):
+        """Metodo principal Sistema Autonomo de Deteccion Snow"""
         global run
 
-        with lock_SADS:
+        with self.lock_SADS:
             while True:
 
                 if run:
 
-                    for nombre_camara, frame in self.toma_frame().items():
+                    for nombre_captura, frame in self.toma_frame().items():
 
-                        results = self.detecion_roi(nombre_camara, frame)
+                        results = self.detecion_roi(nombre_captura, frame)
 
-                        self.dibujo(nombre_camara, frame, results)
+                        self.dibujo(nombre_captura, frame, results)
 
                         for box in results[0].boxes:
                             conf = float(box.conf[0])
-                            if conf > 0.83 and not self.detecto[nombre_camara]:
-                                self.logging.info(f"Clase detectada con {conf*100:.2f}% de confianza de  //{nombre_camara}") 
-                                t = threading.Thread(target=self.protocolo_detecion, args=(nombre_camara,), daemon=True)
+                            if conf > 0.83 and not self.detecto[nombre_captura]:
+                                self.logging.info(f"Clase detectada con {conf*100:.2f}% de confianza de  /// {nombre_captura} /// {self.nombre}") 
+                                t = threading.Thread(target=self.protocolo_detecion, args=(nombre_captura,), daemon=True)
                                 t.start()
 
                     if cv2.waitKey(1) & 0xFF == 27:  # ESC
@@ -443,18 +458,29 @@ class SADS:
 
 
 if __name__ == "__main__":
-    evento = threading.Event()
-    evento_error = threading.Event()
-    pygame.mixer.init()
-    sistema = Sistema(evento,evento_error)
-    sads = SADS(evento,evento_error)
 
+    camara_global = cv2.VideoCapture(0)  
+    pygame.mixer.init()
+
+    sistema = Sistema()
     hilo_control = threading.Thread(target=sistema.control_tiempo, args=(), daemon=True)
     hilo_control.start()
     
     while run == None:
         time.sleep(1)
-
-    sads.sads()
     
+    camara1 = SADS(sistema.evento, sistema.evento_error, config_file="configuraciones\configuracion_SADS1.json", camara=camara_global)
+    camara2 = SADS(sistema.evento, sistema.evento_error, config_file="configuraciones\configuracion_SADS2.json", camara=camara_global)
+    camara3 = SADS(sistema.evento, sistema.evento_error, config_file="configuraciones\configuracion_SADS3.json", camara=camara_global)
 
+    a = threading.Thread(target=camara1.sads, args=(), daemon=True)
+    a.start()
+
+    b = threading.Thread(target=camara2.sads, args=(), daemon=True)
+    b.start()
+
+    c = threading.Thread(target=camara3.sads, args=(), daemon=True)
+    c.start()
+
+    while True:
+        time.sleep(60 * 10)

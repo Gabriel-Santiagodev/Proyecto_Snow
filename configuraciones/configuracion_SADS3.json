@@ -1,24 +1,25 @@
 {
-    "nombre": "camara",
+    "nombre": "camara3",
     "dibujar_pantalla": true,
     "modelo": "best.pt",
     "ventana_tiempo": 5,
     "rois": {
         "captura1": [
-            400,
             0,
-            640,
-            480
+            422,
+            240,
+            623
         ],
         "captura2": [
-            0,
-            0,
-            300,
-            480
+            240,
+            422,
+            480,
+            623
         ]
     },
     "sound_path": {
         "captura1": "sonido_prueva0.mp3",
         "captura2": "sonido_prueva2.mp3"
-    }
+    },
+    "input" : "videos\\traffic.mp4"
 }

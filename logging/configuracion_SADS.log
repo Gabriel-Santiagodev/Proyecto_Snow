@@ -20,3 +20,85 @@
 2025-10-27 20:28:03,444 - INFO /// camara detenida por run horario
 2025-10-27 20:29:12,072 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
 2025-10-27 20:30:05,299 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-28 09:10:22,290 - ERROR /// No se encontro el archivo de configuracion, cargando por defaul
+2025-10-28 09:11:14,943 - INFO /// Clase detectada con 87.95% de confianza de  //camara2
+2025-10-28 09:11:16,379 - INFO /// Clase detectada con 83.18% de confianza de  //camara1
+2025-10-28 09:11:17,381 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en camara1)
+2025-10-28 09:11:25,521 - INFO /// Clase detectada con 84.19% de confianza de  //camara2
+2025-10-28 09:11:32,788 - INFO /// Clase detectada con 83.84% de confianza de  //camara1
+2025-10-28 09:11:33,790 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en camara1)
+2025-10-28 09:11:41,106 - INFO /// Clase detectada con 89.43% de confianza de  //camara2
+2025-10-28 09:11:42,914 - INFO /// Clase detectada con 83.11% de confianza de  //camara1
+2025-10-28 09:11:43,914 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en camara1)
+2025-10-28 09:11:55,570 - INFO /// Clase detectada con 85.30% de confianza de  //camara1
+2025-10-28 09:11:57,215 - INFO /// Clase detectada con 84.61% de confianza de  //camara2
+2025-10-28 09:11:58,216 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en camara2)
+2025-10-29 14:41:06,523 - INFO /// Clase detectada con 88.27% de confianza de  //captura1
+2025-10-29 14:41:27,154 - INFO /// Clase detectada con 83.76% de confianza de  //captura2
+2025-10-29 14:41:28,157 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-29 14:41:42,652 - INFO /// Clase detectada con 88.49% de confianza de  //captura1
+2025-10-29 14:41:59,815 - INFO /// Clase detectada con 86.09% de confianza de  //captura2
+2025-10-29 14:42:00,816 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-29 14:42:05,122 - INFO /// Clase detectada con 86.56% de confianza de  //captura2
+2025-10-29 14:42:06,654 - INFO /// Clase detectada con 83.40% de confianza de  //captura1
+2025-10-29 14:42:07,656 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura1)
+2025-10-29 16:31:51,115 - INFO /// Clase detectada con 91.47% de confianza de  //captura1
+2025-10-29 16:31:53,854 - INFO /// Clase detectada con 87.38% de confianza de  //captura2
+2025-10-29 16:31:54,855 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-29 16:31:59,793 - ERROR /// No se pudo abrir la camara
+2025-10-29 16:32:06,245 - ERROR /// No se pudo abrir la camara
+2025-10-29 16:38:46,769 - ERROR /// No se pudo abrir la camara: < cv2.VideoCapture 0000027EF6A4DF50>
+2025-10-29 16:38:59,617 - ERROR /// No se pudo abrir la camara: < cv2.VideoCapture 0000027EF6A4DF50>
+2025-10-29 18:06:14,237 - ERROR /// No se pudo abrir la camara: < cv2.VideoCapture 000001C87BBFEA30>
+2025-10-29 18:06:32,533 - INFO /// Clase detectada con 83.70% de confianza de  //captura1
+2025-10-29 18:12:33,242 - INFO /// Clase detectada con 83.70% de confianza de  //captura1
+2025-10-29 18:17:37,843 - INFO /// Clase detectada con 83.70% de confianza de  //captura1 // camara2
+2025-10-30 13:58:31,664 - ERROR /// No se pudo abrir la camara
+2025-10-30 14:01:05,415 - ERROR /// No se pudo abrir la camara
+2025-10-30 14:01:05,660 - ERROR /// No se pudo abrir la camara
+2025-10-30 14:06:35,358 - INFO /// Clase detectada con 88.39% de confianza de  //captura1
+2025-10-30 14:06:38,643 - INFO /// Clase detectada con 87.22% de confianza de  //captura2
+2025-10-30 14:06:39,645 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-30 14:06:45,376 - INFO /// Clase detectada con 84.53% de confianza de  //captura2
+2025-10-30 14:07:00,372 - INFO /// Clase detectada con 90.52% de confianza de  //captura1
+2025-10-30 14:07:01,374 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura1)
+2025-10-30 14:07:14,491 - ERROR /// No se pudo abrir la camara
+2025-10-31 12:45:32,574 - INFO /// Clase detectada con 85.52% de confianza de  //captura1
+2025-10-31 12:46:27,888 - INFO /// Clase detectada con 86.74% de confianza de  //captura2
+2025-10-31 12:46:28,890 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-31 12:46:41,160 - INFO /// Clase detectada con 84.06% de confianza de  //captura1
+2025-10-31 12:46:50,055 - INFO /// Clase detectada con 90.46% de confianza de  //captura2
+2025-10-31 12:46:51,059 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-31 12:46:54,102 - INFO /// Clase detectada con 84.02% de confianza de  //captura2
+2025-10-31 12:47:33,480 - INFO /// Clase detectada con 94.81% de confianza de  //captura1
+2025-10-31 12:47:34,482 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura1)
+2025-10-31 12:47:51,920 - INFO /// Clase detectada con 83.31% de confianza de  //captura1
+2025-10-31 12:48:02,416 - INFO /// Clase detectada con 91.55% de confianza de  //captura1
+2025-10-31 12:48:11,940 - INFO /// Clase detectada con 83.63% de confianza de  //captura2
+2025-10-31 12:48:12,943 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-31 12:48:15,102 - INFO /// Clase detectada con 83.01% de confianza de  //captura1
+2025-10-31 12:48:25,203 - INFO /// Clase detectada con 90.19% de confianza de  //captura2
+2025-10-31 12:48:26,204 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-31 12:48:28,927 - INFO /// Clase detectada con 84.59% de confianza de  //captura1
+2025-10-31 12:48:31,338 - ERROR /// No se pudo abrir la camara
+2025-10-31 12:52:44,529 - INFO /// Clase detectada con 84.37% de confianza de  /// captura1 /// camara1
+2025-10-31 12:52:48,178 - INFO /// Clase detectada con 92.14% de confianza de  /// captura2 /// camara1
+2025-10-31 12:52:49,180 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-31 12:52:57,044 - INFO /// Clase detectada con 85.62% de confianza de  /// captura2 /// camara1
+2025-10-31 12:53:02,770 - INFO /// Clase detectada con 83.91% de confianza de  /// captura1 /// camara1
+2025-10-31 12:53:03,774 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura1)
+2025-10-31 12:53:22,400 - INFO /// Clase detectada con 88.49% de confianza de  /// captura1 /// camara2
+2025-10-31 12:53:26,999 - INFO /// Clase detectada con 90.21% de confianza de  /// captura2 /// camara2
+2025-10-31 12:53:28,001 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2)
+2025-10-31 12:53:40,235 - INFO /// Clase detectada con 93.05% de confianza de  /// captura2 /// camara2
+2025-10-31 12:53:43,259 - INFO /// Clase detectada con 86.70% de confianza de  /// captura1 /// camara2
+2025-10-31 12:53:44,261 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura1)
+2025-10-31 12:53:48,066 - ERROR /// No se pudo abrir la camara
+2025-10-31 12:53:48,285 - ERROR /// No se pudo abrir la camara
+2025-10-31 13:01:03,951 - INFO /// Clase detectada con 83.34% de confianza de  /// captura1 /// camara1
+2025-10-31 13:01:33,076 - INFO /// Clase detectada con 90.44% de confianza de  /// captura2 /// camara2
+2025-10-31 13:01:37,492 - INFO /// Clase detectada con 84.34% de confianza de  /// captura1 /// camara2
+2025-10-31 13:01:38,494 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura1 /// camara2)
+2025-10-31 13:01:54,137 - INFO /// Clase detectada con 84.33% de confianza de  /// captura2 /// camara1
+2025-10-31 13:01:55,138 - INFO /// 🚨 Alarma disparada con 1s (ultima deteccion en captura2 /// camara1)
+2025-10-31 13:01:58,310 - ERROR /// No se pudo abrir la camara
