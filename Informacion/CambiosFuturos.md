@@ -16,7 +16,7 @@ self.camara2 = cv2.VideoCapture(1)  # Real second camera
 # 5. Enable battery display if needed (Line ~154)
 # Uncomment if you want console output
 
-# 6. Delete cv2.Windows
+# 6. Delete cv2.Windows in final version
 
 Hardware checklist:
 

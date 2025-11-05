@@ -20,18 +20,14 @@
 
 ### **En Windows (Desarrollo/Pruebas):**
 
-1. **Ejecutar verificación:**
+1. **Iniciar sistema principal:**
    ```cmd
-   python prueba_sistema.py
+   python main_bateria.py
    ```
-
-2. **Iniciar sistema de desarrollo:**
+   
+2. **Iniciar sistema autónomo:**
    ```cmd
-   python sistema_desarrollo.py
-   ```
-   O usar el archivo batch:
-   ```cmd
-   iniciar_desarrollo.bat
+   python sistema_vigilancia_autonomo.py
    ```
 
 3. **Controles:**
@@ -100,9 +96,8 @@
 ## 📁 **Archivos del Sistema**
 
 ### **Sistema Principal:**
+- `main_bateria.py` - Sistema principal con gestión de batería
 - `sistema_vigilancia_autonomo.py` - Sistema completo para Raspberry Pi
-- `sistema_desarrollo.py` - Versión simplificada para Windows
-- `a.py` - Tu código original modificado
 
 ### **Sistemas de Soporte:**
 - `sistema_emergencia_sms.py` - Sistema SMS de emergencia
@@ -115,8 +110,6 @@
 
 ### **Scripts de Gestión:**
 - `instalar_sistema.sh` - Instalación automática (Raspberry Pi)
-- `iniciar_desarrollo.bat` - Inicio rápido (Windows)
-- `prueba_sistema.py` - Verificación del sistema
 
 ### **Documentación:**
 - `README_SISTEMA_SADA.md` - Documentación completa
@@ -167,23 +160,20 @@
 
 ### **En Windows:**
 ```cmd
-# Verificar sistema
-python prueba_sistema.py
+# Iniciar sistema principal con batería
+python main_bateria.py
 
-# Iniciar desarrollo
-python sistema_desarrollo.py
-
-# O usar batch
-iniciar_desarrollo.bat
+# Iniciar sistema autónomo
+python sistema_vigilancia_autonomo.py
 ```
 
 ### **En Raspberry Pi:**
 ```bash
-# Verificar sistema
-python3 prueba_sistema.py
+# Iniciar sistema principal
+python3 main_bateria.py
 
-# Iniciar sistema
-./iniciar_sistema.sh
+# O iniciar sistema autónomo
+python3 sistema_vigilancia_autonomo.py
 
 # Ver estado del servicio
 sudo systemctl status sistema_vigilancia
@@ -235,7 +225,7 @@ sudo journalctl -u sistema_vigilancia -f
 
 ### **Para Desarrollo (Windows):**
 1. ✅ Sistema verificado y funcionando
-2. ✅ Puedes probar y modificar el código
+2. ✅ Puedes probar y modificar el código usando `main_bateria.py`
 3. ✅ Todas las funcionalidades implementadas
 
 ### **Para Producción (Raspberry Pi):**

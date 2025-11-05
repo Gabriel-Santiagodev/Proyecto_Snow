@@ -25,31 +25,25 @@ Sistema de vigilancia inteligente diseñado para funcionamiento autónomo en ext
 ## 📁 Estructura del Proyecto
 
 ```
-protocolo_deteccion/
-├── sistema_vigilancia_autonomo.py    # Sistema principal
-├── sistema_emergencia_sms.py         # Sistema SMS de emergencia
+proyecto_snow/
+├── main_bateria.py                   # Sistema principal con gestión de batería
+├── sistema_vigilancia_autonomo.py    # Sistema autónomo para Raspberry Pi
+├── simulador_bateria.py              # Simulador de batería para desarrollo
 ├── optimizador_energia.py            # Optimización energética
-├── config_sistema.json               # Configuración principal
-├── config_sms.json                   # Configuración SMS
-├── config_energia.json               # Configuración energía
-├── sistema_vigilancia.service        # Servicio systemd
+├── config/                           # Configuraciones
+│   ├── config_sistema.json          # Configuración principal
+│   ├── config_sms.json              # Configuración SMS
+│   ├── config_energia.json          # Configuración energía
+│   └── config_bateria.json          # Configuración batería
+├── documentacion/                    # Documentación del sistema
+│   ├── sistema_vigilancia.service   # Servicio systemd
+│   ├── README_SISTEMA_SADA.md       # Esta documentación
+│   └── INSTRUCCIONES_FINALES.md     # Instrucciones de uso
 ├── instalar_sistema.sh               # Script de instalación
-├── monitoreo_sistema.sh              # Script de monitoreo
-├── backup_logs.sh                    # Script de backup
-├── iniciar_sistema.sh                # Script de inicio rápido
-├── parar_sistema.sh                  # Script de parada
-├── a.py                              # Código original (modificado)
-├── script.py                         # Código original
 ├── best.pt                           # Modelo YOLO
 ├── sonido_prueva0.mp3                # Sonido cámara 1
-├── sonido_prueva1.mp3                # Sonido adicional
 ├── sonido_prueva2.mp3                # Sonido cámara 2
-├── logs/                             # Directorio de logs
-│   ├── sistema_vigilancia.log
-│   ├── detecciones.log
-│   ├── sistema_sms.log
-│   └── optimizador_energia.log
-└── README_SISTEMA_SADA.md            # Esta documentación
+└── logs/                             # Directorio de logs (se genera automáticamente)
 ```
 
 ## 🚀 Instalación y Configuración
@@ -129,20 +123,17 @@ sudo systemctl enable sistema_vigilancia.service
 
 ### **Comandos Principales**
 ```bash
-# Iniciar sistema
-./iniciar_sistema.sh
+# Iniciar sistema principal
+python3 main_bateria.py
 
-# Parar sistema
-./parar_sistema.sh
+# O iniciar sistema autónomo
+python3 sistema_vigilancia_autonomo.py
 
-# Ver estado del servicio
+# Ver estado del servicio (si está como servicio)
 sudo systemctl status sistema_vigilancia
 
 # Ver logs en tiempo real
 sudo journalctl -u sistema_vigilancia -f
-
-# Monitoreo del sistema
-./monitoreo_sistema.sh
 ```
 
 ### **Gestión del Servicio**
