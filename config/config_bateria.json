@@ -1,0 +1,9 @@
+{
+    "velocidad_simulacion": 60,
+    "variacion_consumo": 0.1,
+    "horas_sol_promedio": 6,
+    "eficiencia_panel": 0.75,
+    "profundidad_descarga_max": 0.8,
+    "temperatura_ambiente": 25,
+    "ubicacion": "Queretaro"
+}

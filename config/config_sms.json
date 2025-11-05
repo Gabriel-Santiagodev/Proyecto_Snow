@@ -1,0 +1,13 @@
+{
+    "puerto_serial": "/dev/ttyUSB0",
+    "velocidad": 9600,
+    "pin_sim": "1234",
+    "numero_emergencia": "+1234567890",
+    "mensaje_emergencia": "🚨 ALERTA SADA: Sistema de vigilancia con problemas críticos",
+    "timeout_comando": 5,
+    "max_reintentos": 3,
+    "habilitado": true,
+    "enviar_detecciones": false,
+    "enviar_estado_diario": true,
+    "hora_reporte_diario": "08:00"
+}
