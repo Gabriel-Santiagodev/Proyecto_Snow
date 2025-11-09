@@ -27,7 +27,7 @@ import json
 import datetime
 import psutil
 from pathlib import Path
-
+import oled_module
 # ════════════════════════════════════════════════════════════
 # CONFIGURACIÓN DE LOGGING PARA ULTRALYTICS/YOLO
 # ════════════════════════════════════════════════════════════
@@ -121,6 +121,12 @@ class SistemaVigilanciaConBateria:
         # Configuración de horarios
         self.hora_inicio = self.config.get('hora_inicio', 6.5) # 6:30 AM
         self.hora_fin = self.config.get('hora_fin', 20) # 8:00 PM
+        
+        # Evento para controlar el módulo OLED
+        self.stop_event = threading.Event()
+
+        # Bandera para evitar limpieza doble
+        self.recursos_limpiados = False
         
         # Inicializar componentes
         self.inicializar_componentes()
@@ -260,12 +266,22 @@ class SistemaVigilanciaConBateria:
     
     def limpiar_recursos(self):
         """Limpia todos los recursos del sistema"""
+        # Evitar limpieza doble
+        if self.recursos_limpiados:
+            return
+        self.recursos_limpiados = True
+        
         try:
+            self.stop_event.set()
+            self.logger.info("Módulo OLED detenido")
+            time.sleep(0.5)
+            
             if self.camara1:
                 self.camara1.release()
             if self.camara2:
                 self.camara2.release()
             cv2.destroyAllWindows()
+            cv2.waitKey(1)
             self.logger.info("Recursos limpiados correctamente")
         except Exception as e:
             self.logger.error(f"Error limpiando recursos: {e}")
@@ -529,6 +545,15 @@ class SistemaVigilanciaConBateria:
             heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
             heartbeat_thread.start()
             
+            # Iniciar módulo OLED
+            oled_thread = threading.Thread(
+                target=oled_module.run, 
+                args=(self.stop_event,), 
+                daemon=True
+            )
+            oled_thread.start()
+            self.logger.info("Módulo OLED iniciado")
+            
             self.logger.info("Sistema iniciado correctamente")
             # ESTOS PRINTS SERAN ELIMINADOS CUANDO SE CONSIGA LA VERSION FINAL
             print("Sistema de Vigilancia Snow - Con Gestión de Batería")
@@ -581,6 +606,13 @@ class SistemaVigilanciaConBateria:
                         self.limpiar_recursos()
                         time.sleep(60)
                         continue
+
+                    # ════════════════════════════════════════════════════
+                    # VERIFICAR SI SE SOLICITÓ DETENER DESDE OLED
+                    # ════════════════════════════════════════════════════
+                    if self.stop_event.is_set():
+                        self.logger.info("Detención solicitada desde módulo OLED")
+                        break
                     
                     # ════════════════════════════════════════════════════
                     # CAPTURA Y PROCESAMIENTO DE FRAMES

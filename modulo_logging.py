@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import sys 
 from config import DEBUG, CONSOLE_LOG, FILE_LOG
-from ModulosGenerales.error_buffer import add_error
+from error_buffer import add_error
 
 
 
