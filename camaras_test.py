@@ -3,7 +3,7 @@
 import logging
 import ModulosGenerales.modulo_logging as modulo_logging 
 import threading
-import TareasSegundoPlano.oled_test as camara_menu
+import TareasSegundoPlano.oled_module as camara_menu
 import time
 
 modulo_logging.setup_logging()
@@ -21,7 +21,7 @@ camara_thread.start()
 
 while True:
     Main_test.error("Camara 1 apagada")
-    time.sleep(10)
+    time.sleep(1)
 
 try: 
     camara_thread.join()

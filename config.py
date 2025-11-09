@@ -11,3 +11,7 @@ ERROR_BUFFER_MAXLEN = 5 # Maximum number of error messages to store in the buffe
 
 #--------------------------------------------------------------------------------------
 
+# Valor de umbral para detectar obstrucciones en las camaras
+THRESHOLD = 500000
+
+#---------------------------------------------------------------------------------------
