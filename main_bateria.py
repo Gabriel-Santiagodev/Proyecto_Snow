@@ -61,9 +61,14 @@ ultralytics_logger.addHandler(yolo_handler)
 
 # ════════════════════════════════════════════════════════════
 
-# ✅ Importar simulador de batería
+# Importar simulador de batería
 # IMPORTACION TEMPORAL. CUANDO TENGAMOS MANERA DE LEER LA BATERIA LO ELIMINAREMOS
 from simulador_bateria import SimuladorBateria
+
+# ════════════════════════════════════════════════════════════
+
+# Importar Camera_Module.py
+from Camera_Module import Camera_Module
 
 class SistemaVigilanciaConBateria:
     def __init__(self):
@@ -103,11 +108,13 @@ class SistemaVigilanciaConBateria:
         self.camara2 = None
         self.lock = threading.Lock()
         
-        # Configuración de cámaras y ROIs
+        # Diccionario de zonas roi (zonas donde se hara la deteccion)
         self.rois = {
-            "camara1": (400, 0, 640, 480),
-            "camara2": (0, 0, 300, 480)
+            "camara 1": (400, 0, 640, 480),
+            "camara 2": (0, 0, 300, 480)
         }
+
+        # Configuración de cámaras
         self.ultimo_evento = {"camara1": None, "camara2": None}
         self.detecto = {"camara1": False, "camara2": False}
         self.sound_path = {
@@ -200,28 +207,23 @@ class SistemaVigilanciaConBateria:
             self.modelo = YOLO('best.pt', verbose=False)
             self.logger.info("Modelo YOLO cargado correctamente")            
             
-            # Inicializar cámara 1
-            self.camara1 = cv2.VideoCapture(0)
-            if not self.camara1.isOpened():
-                raise Exception("No se pudo abrir la cámara 1")
+            # Inicializar cámaras
+            self.camara1 = Camera_Module(src = 0).start()
+            self.camara2 = Camera_Module(src = 1).start()
+
+            # Tiempo para que las cámaras arranquen
+            time.sleep(2.0)
             
-            # Inicializar cámara 2
-            self.camara2 = cv2.VideoCapture(1)
-            if not self.camara2.isOpened():
-                # ESTA LINEA VA A SER CAMBIADA CUANDO TENGAMOS ACCESO A 2 CAMARAS
-                self.logger.warning("Cámara 2 no disponible, usando cámara 1")
-                self.camara2 = self.camara1
-            
-            # Configurar cámara 1
-            self.camara1.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-            self.camara1.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-            self.camara1.set(cv2.CAP_PROP_FPS, 15)
-            
-            # Configurar cámara 2
-            self.camara2.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-            self.camara2.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-            self.camara2.set(cv2.CAP_PROP_FPS, 15) 
-            self.logger.info("Cámaras inicializadas correctamente")
+            # Comprobacion de errores
+            if not self.camara1.isOpened() and not self.camara2.isOpened():
+                raise Exception("Error Critico: Ambas camaras no se pudieron abrir")
+            else:
+                if not self.camara1.isOpened():
+                    self.logger.warning("No se pudo abrir la cámara 1")
+                if not self.camara2.isOpened():
+                    self.logger.warning("No se puedo abrir la cámara 2")
+            if self.camara1.isOpened() and self.camara2.isOpened():
+                self.logger.info("Cámaras inicializadas correctamente")
             
         except Exception as e:
             self.logger.error(f"Error inicializando componentes: {e}")
@@ -230,29 +232,29 @@ class SistemaVigilanciaConBateria:
     def tomar_frame(self, usar_ambas_camaras=True):
 
         """Captura frame de las cámaras (adaptable según batería)"""
-        
-        try:
-            # Obtiene los frames de camara1
-            ret1, frame1 = self.camara1.read()
-            if not ret1:
-                raise Exception("Error capturando frame de la cámara 1")
-            
-            # Dependiendo del porcentaje, comprobar si se deben capturar frames en camara2
-            if usar_ambas_camaras:
-                ret2, frame2 = self.camara2.read()
-                if not ret2:
-                    self.logger.warning("Error en cámara 2, usando solo cámara 1")
-                    return {"camara1": frame1}
-                return {
-                    "camara1": frame1,
-                    "camara2": frame2
-                }
-            else:
-                return {"camara1": frame1}
-                
-        except Exception as e:
-            self.logger.error(f"Error tomando frame: {e}")
+        frames_capturados = {}
+
+        # Obtener los frames de camara1
+        frame1 = self.camara1.read()
+
+        # Guardar los frames de camara1 en un diccionario
+        if frame1 is not None:
+            frames_capturados["camara1"] = frame1
+        else:
+            self.logger.warning("Error: Camara 1 devolvio frame vacio (None)")
             return None
+        
+        if usar_ambas_camaras and self.camara2.isOpened():
+            # Obtener los frames de camara1
+            frame2 = self.camara2.read()
+            
+            # Guardar los frames de camara1 en un diccionario
+            if frame2 is not None:
+                frames_capturados["camara2"] = frame2
+            else:
+                self.logger.warning("Error: Camara 2 devolvio frame vacio (None)")
+
+        return frames_capturados                
 
     def deteccion_roi(self, frame, roi_x1, roi_y1, roi_x2, roi_y2):
         """Realiza detección en región de interés"""
