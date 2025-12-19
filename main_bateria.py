@@ -110,8 +110,8 @@ class SistemaVigilanciaConBateria:
         
         # Diccionario de zonas roi (zonas donde se hara la deteccion)
         self.rois = {
-            "camara 1": (400, 0, 640, 480),
-            "camara 2": (0, 0, 300, 480)
+            "camara1": (400, 0, 640, 480),
+            "camara2": (0, 0, 300, 480)
         }
 
         # Configuración de cámaras
@@ -121,13 +121,13 @@ class SistemaVigilanciaConBateria:
             "camara1": "sonido_prueva0.mp3", 
             "camara2": "sonido_prueva2.mp3"
         }
-        self.umbral_obstruccion = 5000
+        self.umbral_obstruccion = 500
         self.ultimo_chequeo = time.time()
         self.intervalo_chequeo = 30
         
         # Configuración de horarios
         self.hora_inicio = self.config.get('hora_inicio', 6.5) # 6:30 AM
-        self.hora_fin = self.config.get('hora_fin', 20) # 8:00 PM
+        self.hora_fin = self.config.get('hora_fin', 23) # 8:00 PM
         
         # Evento para controlar el módulo OLED
         self.stop_event = threading.Event()
@@ -226,22 +226,22 @@ class SistemaVigilanciaConBateria:
             # Inicializar cámaras
             self.camara1 = Camera_Module(src = 0).start()
             self.camara2 = Camera_Module(src = 1).start()
-            if self.camara2 is False:
+            if self.camara2 is None:
                 self.camara2 = self.camara1
 
             # Tiempo para que las cámaras arranquen
             time.sleep(2.0)
             
-            # Comprobacion de errores
-            if not self.camara1.isOpened() and not self.camara2.isOpened():
-                raise Exception("Error Critico: Ambas camaras no se pudieron abrir")
-            else:
-                if not self.camara1.isOpened():
-                    self.logger.warning("No se pudo abrir la cámara 1")
-                if not self.camara2.isOpened():
-                    self.logger.warning("No se puedo abrir la cámara 2")
-            if self.camara1.isOpened() and self.camara2.isOpened():
-                self.logger.info("Cámaras inicializadas correctamente")
+            # Trabajar con una sola camara, mientras hacemos pruebas
+            if not self.camara2.isOpened():
+                self.logger.warning("No se pudo abrir la cámara 2. Usando la cámara 1 como respaldo.")
+                self.camara2 = self.camara1
+
+            # Revisar si al menos una camara esta abierta
+            if not self.camara1.isOpened():
+                raise Exception("Error Critico: No se pudo abrir ninguna cámara")
+        
+            self.logger.info("Cámaras inicializadas correctamente")
             
         except Exception as e:
             self.logger.error(f"Error inicializando componentes: {e}")
@@ -262,15 +262,16 @@ class SistemaVigilanciaConBateria:
             self.logger.warning("Error: Camara 1 devolvio frame vacio (None)")
             return None
         
-        if usar_ambas_camaras and self.camara2.isOpened():
-            # Obtener los frames de camara1
-            frame2 = self.camara2.read()
-            
-            # Guardar los frames de camara1 en un diccionario
-            if frame2 is not None:
-                frames_capturados["camara2"] = frame2
-            else:
-                self.logger.warning("Error: Camara 2 devolvio frame vacio (None)")
+        if usar_ambas_camaras:
+            # En caso de usar la misma camara para ambas camaras, se reutiliza el frame
+            if self.camara2 == self.camara1:
+                frames_capturados["camara2"] = frame1.copy()
+            elif self.camara2.isOpened():
+                frame2 = self.camara2.read()
+                if frame2 is not None:
+                    frames_capturados["camara2"] = frame2
+                else:
+                    self.logger.warning("Error: Camara 2 devolvio frame vacio (None)")
 
         return frames_capturados                
 
@@ -313,15 +314,15 @@ class SistemaVigilanciaConBateria:
     def obstruccion(self, camara):
         """Detecta si la cámara está obstruida"""
         try:
-            ret1, frame1 = camara.read()
-            if not ret1:
+            frame1 = camara.read()
+            if frame1 is None:
                 self.logger.error("Error leyendo primer frame para obstrucción")
                 return True
             
             time.sleep(0.1)
             
-            ret2, frame2 = camara.read()
-            if not ret2:
+            frame2 = camara.read()
+            if frame2 is None:
                 self.logger.error("Error leyendo segundo frame para obstrucción")
                 return True
             
@@ -591,124 +592,124 @@ class SistemaVigilanciaConBateria:
         except Exception as e:
             self.logger.critical(f"Error inicializando los componentes base: {e}")
             
-            # Ciclo principal
-            while self.sistema_activo:
+        # Ciclo principal
+        while self.sistema_activo:
 
-                # CASO 1. Es de noche
-                if not self.es_horario_activo():
-                    if not self.standby:
-                        self.logger.info("No es horario activo")
-                        self.limpiar.recursos()
-                        self.standby = True
-                    time.sleep(60)
-                    continue
-                
-                # CASO 2. Es de dia
-                else:
-                    if self.standby:
-                        self.logger.info("Horario activo")
+            # CASO 1. Es de noche
+            if not self.es_horario_activo():
+                if not self.standby:
+                    self.logger.info("No es horario activo")
+                    self.limpiar.recursos()
+                    self.standby = True
+                time.sleep(60)
+                continue
+            
+            # CASO 2. Es de dia
+            else:
+                if self.standby:
+                    self.logger.info("Horario activo")
 
-                        # Reactivar la OLED en caso de ser necesario
-                        self.stop_event.clear() 
-                        
-                        self.standby = False
+                    # Reactivar la OLED en caso de ser necesario
+                    self.stop_event.clear() 
+                    
+                    self.standby = False
 
-                        try:
-                            self.inicializar_componentes()
-                        except Exception as e:
-                            self.logger.critical(f"Error al activar los componentes, reintentando en 10 segundos")
-                            time.sleep(10)
-                            continue
-                    try: 
-                        # ════════════════════════════════════════════════════
-                        # ACTUALIZAR Y VERIFICAR BATERÍA
-                        # ════════════════════════════════════════════════════
-                        self.actualizar_bateria()
-                        estado_bateria = self.obtener_estado_bateria()
-                        porcentaje = estado_bateria['porcentaje']
-                        
-                        # Determinar modo de operación
-                        nuevo_modo, num_camaras = self.determinar_modo_operacion(porcentaje)
-                        
-                        # Cambiar modo si es necesario
-                        if nuevo_modo != self.modo_actual:
-                            self.cambiar_modo(nuevo_modo, num_camaras)
-
-                        if not hasattr(self, 'ultimo_porcentaje_log'):
-                            self.ultimo_porcentaje_log = 100
-                            self.logger.info(f"Batería inicial: {porcentaje:.1f}%")
-
-                        porcentaje_redondeado = int(porcentaje / 10) * 10  # Round to nearest 10
-                        if porcentaje_redondeado < self.ultimo_porcentaje_log:
-                            self.ultimo_porcentaje_log = porcentaje_redondeado
-                            self.logger.info(f"Batería: {porcentaje:.1f}% ({estado_bateria['voltaje']:.2f}V)")
-                        
-                        # ESTA AREA ESTA COMENTADA PORQUE SIRVE SOLO AL MOMENTO DE HACER PRUEBAS
-                        # if int(time.time()) % 5 == 0:  # Solo cada 5 segundos
-                        #    self.mostrar_estado_bateria()
-                        
-                        # ════════════════════════════════════════════════════
-                        # VERIFICAR CAMARAS
-                        # ════════════════════════════════════════════════════
-                        if time.time() - self.ultimo_chequeo > self.intervalo_chequeo:
-                            if not self.verificar_camaras(self.camara1, self.camara2):
-                                time.sleep(2)
-                                continue
-                            self.ultimo_chequeo = time.time()
-
-                        # ════════════════════════════════════════════════════
-                        # VERIFICAR SI SE SOLICITÓ DETENER DESDE OLED
-                        # ════════════════════════════════════════════════════
-                        if self.stop_event.is_set():
-                            self.logger.info("Detención solicitada desde módulo OLED")
-                            break
-                        
-                        # ════════════════════════════════════════════════════
-                        # CAPTURA Y PROCESAMIENTO DE FRAMES
-                        # ════════════════════════════════════════════════════                    
-                        usar_dos_camaras = (num_camaras == 2)
-                        cola_frames = self.tomar_frame(usar_ambas_camaras=usar_dos_camaras)
-                        
-                        if cola_frames is None:
-                            self.logger.error("Error capturando frame, reintentando...")
-                            time.sleep(1)
-                            continue
-                        
-                        # ════════════════════════════════════════════════════
-                        # PROCESAMIENTO CON YOLO
-                        # ════════════════════════════════════════════════════
-                        for cam_name, frame in cola_frames.items():
-                            roi_x1, roi_y1, roi_x2, roi_y2 = self.rois[cam_name]
-                            results = self.deteccion_roi(frame, roi_x1, roi_y1, roi_x2, roi_y2)
-                            
-                            if results is None:
-                                continue
-                            
-                            self.dibujar_ventanas(cam_name, frame, results, roi_x1, roi_y1, roi_x2, roi_y2)
-                            
-                            if results and len(results) > 0 and results[0].boxes is not None:
-                                for box in results[0].boxes:
-                                    conf = float(box.conf[0])
-                                    umbral = self.config.get('umbral_confianza', 0.83)
-                                    
-                                    if conf > umbral and not self.detecto[cam_name]:
-                                        self.detection_logger.info(f"Clase detectada con {conf*100:.2f}% de confianza en {cam_name}")
-                                        print(f"\nDetección en {cam_name}: {conf*100:.1f}% confianza")
-                                        
-                                        ventana_tiempo = self.config.get('ventana_tiempo', 5)
-                                        t = threading.Thread(
-                                            target=self.protocolo_deteccion, 
-                                            args=(cam_name, ventana_tiempo), 
-                                            daemon=True
-                                        )
-                                        t.start()
-                        
-                        if cv2.waitKey(1) & 0xFF == 27:
-                            break
-                        
+                    try:
+                        self.inicializar_componentes()
                     except Exception as e:
-                        self.logger.error(f"Error en bucle de deteccion: {e}")
-                        time.sleep(5)
+                        self.logger.critical(f"Error al activar los componentes, reintentando en 10 segundos")
+                        time.sleep(10)
+                        continue
+                try: 
+                    # ════════════════════════════════════════════════════
+                    # ACTUALIZAR Y VERIFICAR BATERÍA
+                    # ════════════════════════════════════════════════════
+                    self.actualizar_bateria()
+                    estado_bateria = self.obtener_estado_bateria()
+                    porcentaje = estado_bateria['porcentaje']
+                    
+                    # Determinar modo de operación
+                    nuevo_modo, num_camaras = self.determinar_modo_operacion(porcentaje)
+                    
+                    # Cambiar modo si es necesario
+                    if nuevo_modo != self.modo_actual:
+                        self.cambiar_modo(nuevo_modo, num_camaras)
+
+                    if not hasattr(self, 'ultimo_porcentaje_log'):
+                        self.ultimo_porcentaje_log = 100
+                        self.logger.info(f"Batería inicial: {porcentaje:.1f}%")
+
+                    porcentaje_redondeado = int(porcentaje / 10) * 10  # Round to nearest 10
+                    if porcentaje_redondeado < self.ultimo_porcentaje_log:
+                        self.ultimo_porcentaje_log = porcentaje_redondeado
+                        self.logger.info(f"Batería: {porcentaje:.1f}% ({estado_bateria['voltaje']:.2f}V)")
+                    
+                    # ESTA AREA ESTA COMENTADA PORQUE SIRVE SOLO AL MOMENTO DE HACER PRUEBAS
+                    # if int(time.time()) % 5 == 0:  # Solo cada 5 segundos
+                    #    self.mostrar_estado_bateria()
+                    
+                    # ════════════════════════════════════════════════════
+                    # VERIFICAR CAMARAS
+                    # ════════════════════════════════════════════════════
+                    if time.time() - self.ultimo_chequeo > self.intervalo_chequeo:
+                        if not self.verificar_camaras(self.camara1, self.camara2):
+                            time.sleep(2)
+                            continue
+                        self.ultimo_chequeo = time.time()
+
+                    # ════════════════════════════════════════════════════
+                    # VERIFICAR SI SE SOLICITÓ DETENER DESDE OLED
+                    # ════════════════════════════════════════════════════
+                    if self.stop_event.is_set():
+                        self.logger.info("Detención solicitada desde módulo OLED")
+                        break
+                    
+                    # ════════════════════════════════════════════════════
+                    # CAPTURA Y PROCESAMIENTO DE FRAMES
+                    # ════════════════════════════════════════════════════                    
+                    usar_dos_camaras = (num_camaras == 2)
+                    cola_frames = self.tomar_frame(usar_ambas_camaras=usar_dos_camaras)
+                    
+                    if cola_frames is None:
+                        self.logger.error("Error capturando frame, reintentando...")
+                        time.sleep(1)
+                        continue
+                    
+                    # ════════════════════════════════════════════════════
+                    # PROCESAMIENTO CON YOLO
+                    # ════════════════════════════════════════════════════
+                    for cam_name, frame in cola_frames.items():
+                        roi_x1, roi_y1, roi_x2, roi_y2 = self.rois[cam_name]
+                        results = self.deteccion_roi(frame, roi_x1, roi_y1, roi_x2, roi_y2)
+                        
+                        if results is None:
+                            continue
+                        
+                        self.dibujar_ventanas(cam_name, frame, results, roi_x1, roi_y1, roi_x2, roi_y2)
+                        
+                        if results and len(results) > 0 and results[0].boxes is not None:
+                            for box in results[0].boxes:
+                                conf = float(box.conf[0])
+                                umbral = self.config.get('umbral_confianza', 0.83)
+                                
+                                if conf > umbral and not self.detecto[cam_name]:
+                                    self.detection_logger.info(f"Clase detectada con {conf*100:.2f}% de confianza en {cam_name}")
+                                    print(f"\nDetección en {cam_name}: {conf*100:.1f}% confianza")
+                                    
+                                    ventana_tiempo = self.config.get('ventana_tiempo', 5)
+                                    t = threading.Thread(
+                                        target=self.protocolo_deteccion, 
+                                        args=(cam_name, ventana_tiempo), 
+                                        daemon=True
+                                    )
+                                    t.start()
+                    
+                    if cv2.waitKey(1) & 0xFF == 27:
+                        break
+                    
+                except Exception as e:
+                    self.logger.error(f"Error en bucle de deteccion: {e}")
+                    time.sleep(5)
 
 def main():
     """Función principal"""

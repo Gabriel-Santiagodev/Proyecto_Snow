@@ -1,6 +1,6 @@
 {
     "hora_inicio": 6,
-    "hora_fin": 20,
+    "hora_fin": 22,
     "umbral_confianza": 0.83,
     "ventana_tiempo": 5,
     "max_reinicios": 5,
